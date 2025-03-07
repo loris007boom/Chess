@@ -1,4 +1,4 @@
-const createBoard = () => {
+const hallo = () => {
   const boardElement = document.getElementById("board") as HTMLElement;
 
   const startIcons: string[] = [
@@ -70,4 +70,4 @@ const createBoard = () => {
   }
 };
 
-createBoard();
+hallo();
