@@ -20,6 +20,24 @@ body {
   justify-content: center;
 }
 
+#counter {
+  color: white;
+  display: flex;
+  justify-self: center;
+  font-size: 40px;
+  font-family: "Garamond", "Times New Roman", serif;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .white {
   background-color: #ebecd0;
 }
