@@ -19,7 +19,7 @@ let gamePosition: (Piece | null)[][] = [
 
 const createBoard = () => {
   const boardElement = document.getElementById("board") as HTMLElement;
- 
+
   const startPosition: string[][] = [
     ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'],
     ['pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn'],
@@ -55,11 +55,10 @@ const createBoard = () => {
       const color = row < 2 ? "b" : "w"; // Giving the right color to the pieces
       const newPiece = createPiece(startPosition[row][col], color, row, col);
       gamePosition[row][col] = newPiece;
-      if (newPiece)
-      {
+      if (newPiece) {
         square.appendChild(newPiece.img); // Appending the image on the square
       }
-      
+
       boardElement.appendChild(square);
     }
   }
