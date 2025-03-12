@@ -40,13 +40,13 @@ const createBoard = () => {
             // Adding labels only for the bottom row and left column
             if (row === 7) {
                 const rowLabel = document.createElement("p");
-                rowLabel.classList.add("squareLabel");
+                rowLabel.classList.add("squareLabelRow");
                 rowLabel.textContent = letterLabels[col];
                 square.appendChild(rowLabel);
             }
             if (col === 0) {
                 const colLabel = document.createElement("p");
-                colLabel.classList.add("squareLabel");
+                colLabel.classList.add("squareLabelCol");
                 colLabel.textContent = (8 - row).toString();
                 square.appendChild(colLabel);
             }

@@ -61,15 +61,20 @@ textarea {
   height: 45px;
 }
 
-.squareLabel {
+.squareLabelRow {
   position: absolute;
   bottom: 3px;
   right: 3px;
-  color: rgb(84, 84, 84);
+  color: black;
   font-size: 11px;
   margin: 0;
 }
 
-.squareLabel span {
-  margin-left: 2px;
+.squareLabelCol {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  color: black;
+  font-size: 11px;
+  margin: 0;
 }
