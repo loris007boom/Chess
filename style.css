@@ -1,7 +1,7 @@
 body {
   background-color: #312e2b;
 }
-
+ 
 #board {
   display: grid;
   grid-template-columns: repeat(8, 50px);
@@ -11,16 +11,15 @@ body {
   width: 400px;
   height: 400px;
 }
-
+ 
 .square {
-  position: relative;
   width: 50px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
+ 
 #counter {
   color: white;
   display: flex;
@@ -28,7 +27,7 @@ body {
   font-size: 40px;
   font-family: "Garamond", "Times New Roman", serif;
 }
-
+ 
 input,
 select,
 textarea {
@@ -38,15 +37,15 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
+ 
 .white {
   background-color: #ebecd0;
 }
-
+ 
 .green {
   background-color: #5c8233;
 }
-
+ 
 .title {
   color: black;
   display: flex;
@@ -55,7 +54,7 @@ textarea {
   font-family: "Garamond", "Times New Roman", serif;
   color: white;
 }
-
+ 
 .square img {
   width: 45px;
   height: 45px;
