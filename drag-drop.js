@@ -28,7 +28,6 @@ const addDropEvents = (square) => {
         //Taking hold of the image and the piece moving
         const draggedPiece = document.querySelector(".dragging");
         const movingPiece = pieceMap.get(draggedPiece.id);
-        // if (!movingPiece || movingPiece.color !== currentTurn) return;
         //Finding the new row and col to move the piece
         const newRow = parseInt(square.dataset.row);
         const newCol = parseInt(square.dataset.col);

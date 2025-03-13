@@ -46,11 +46,24 @@ body {
 }
 
 #counter {
-  color: white;
+
+  color: whitesmoke;
+  font-family: Arial, sans-serif;
   display: flex;
   justify-self: center;
   font-size: 40px;
   font-family: "Garamond", "Times New Roman", serif;
+  gap: 20px;
+}
+
+button {
+  flex: flex;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pause-button {
+  color: white;
 }
 
 input,
