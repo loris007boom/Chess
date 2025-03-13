@@ -11,6 +11,30 @@ body {
   width: 400px;
   height: 400px;
 }
+.captured-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  width: 200px;
+  height: 200px;
+  padding: 10px;
+}
+
+.middle-left {
+  display: flex;
+  justify-content: center;
+  top: 150px;
+  left: 200px;
+}
+
+.middle-right {
+  display: flex;
+  justify-content: center;
+  bottom: 100px;
+  right: 200px;
+}
 
 .square {
   position: relative;
@@ -22,11 +46,24 @@ body {
 }
 
 #counter {
-  color: white;
+
+  color: whitesmoke;
+  font-family: Arial, sans-serif;
   display: flex;
   justify-self: center;
   font-size: 40px;
   font-family: "Garamond", "Times New Roman", serif;
+  gap: 20px;
+}
+
+button {
+  flex: flex;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pause-button {
+  color: white;
 }
 
 input,

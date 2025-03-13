@@ -1,18 +1,19 @@
 import { addDragEvents } from "./drag-drop.js";
 import { pieceMap, gamePosition } from "./board.js";
 
-class Piece
-{
+
+class Piece{
     img: HTMLImageElement;
     color: string;
     row: number;
     col: number;
     points: number;
 
-    constructor(color: string, row: number, col: number, name: string)
+
+    constructor(color: string, row: number, col: number, name: string) 
     {
         //Creating the img
-        const imgLink = `icons/${name}_${color}.png`
+        const imgLink = `icons/${name}_${color}.png`;
         const img = document.createElement("img");
         img.src = imgLink;
         img.alt = name;
@@ -23,20 +24,23 @@ class Piece
 
         this.img = img;
 
+
         this.color = color;
         this.row = row;
         this.col = col;
         this.points = 0;
 
+
         //Saving in the map the img id with its object for future references
         pieceMap.set(img.id, this);
     }
 
-    move(newRow: number, newCol: number, newSquare: HTMLElement): void
+    move(newRow: number, newCol: number, newSquare: HTMLElement): void 
     {
         //Appending the img on the new square
         newSquare.appendChild(this.img);
 
+    
         //Updating the game position
         gamePosition[this.row][this.col] = null;
         gamePosition[newRow][newCol] = this;
@@ -93,7 +97,17 @@ class Piece
         this.img.remove();
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
+
+    const capturedContainer =
+      this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
+
+    if (capturedContainer) {
+      this.img.style.width = "40px";
+      this.img.style.height = "40px";
+      capturedContainer.appendChild(this.img);
+
     }
+  }
 }
 
 export { Piece };

@@ -1,7 +1,14 @@
 import { pieceMap } from "./board.js";
+let currentTurn = "w"; // Weiß beginnt
 // Drag & Drop Events
 const addDragEvents = (img) => {
     img.addEventListener("dragstart", (e) => {
+        const piece = pieceMap.get(img.id);
+        // Überprüfen, ob die richtige Farbe am Zug ist
+        if ((piece === null || piece === void 0 ? void 0 : piece.color) !== currentTurn) {
+            e.preventDefault();
+            return;
+        }
         img.classList.add("dragging");
         setTimeout(() => img.classList.add("hide"), 0); // Hiding the image on drag
     });
@@ -27,6 +34,8 @@ const addDropEvents = (square) => {
         //Checking if the move is valid
         if ((movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isValidMove(newRow, newCol)) && movingPiece.isPathFree(newRow, newCol)) {
             movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.move(newRow, newCol, square);
+            // Wechseln des Spielzugs
+            currentTurn = currentTurn === "w" ? "b" : "w";
         }
     });
 };

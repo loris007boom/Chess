@@ -64,6 +64,12 @@ class Piece {
         this.img.remove();
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
+        const capturedContainer = this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
+        if (capturedContainer) {
+            this.img.style.width = "40px";
+            this.img.style.height = "40px";
+            capturedContainer.appendChild(this.img);
+        }
     }
 }
 export { Piece };
