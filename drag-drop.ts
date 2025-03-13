@@ -56,4 +56,4 @@ const addDropEvents = (square: HTMLElement) => {
   
 }
 
-export { addDragEvents, addDropEvents };
+export { addDragEvents, addDropEvents, currentTurn };
