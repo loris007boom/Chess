@@ -39,4 +39,4 @@ const addDropEvents = (square) => {
         }
     });
 };
-export { addDragEvents, addDropEvents };
+export { addDragEvents, addDropEvents, currentTurn };
