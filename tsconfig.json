@@ -1,8 +1,8 @@
 {
-    "compilerOptions": {
-        "module": "ESNext",
-        "target": "ES6",
-        "strict": true
-    },
-    "include": ["**/*.ts"]
+  "compilerOptions": {
+      "module": "ESNext",
+      "target": "ES6",
+      "strict": true
+  },
+  "include": ["**/*.ts"]
 }
