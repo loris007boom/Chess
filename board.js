@@ -55,4 +55,4 @@ const createBoard = () => {
     }
 };
 createBoard();
-export { pieceMap, gamePosition };
+export { pieceMap, gamePosition, createBoard };

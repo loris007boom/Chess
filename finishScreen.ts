@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   reStartButton.textContent = "Restart";
 
   // Define the restart function
-  reStartButton.addEventListener('click', createBoard);
+  reStartButton.addEventListener('click', () => window.location.reload());
 
   popUp.appendChild(reStartButton);
 });

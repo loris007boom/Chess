@@ -114,3 +114,17 @@ textarea {
   font-size: 11px;
   margin: 0;
 }
+
+.popUp {
+  width: 80px;
+  height: 80px;
+  background-color: white;
+}
+
+.reStartButton {
+  background-color: aqua;
+  color: #000;
+  width: 60px;
+  height: 60px;
+
+}
