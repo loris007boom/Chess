@@ -31,13 +31,15 @@ const addDropEvents = (square: HTMLElement) => {
     const newCol = parseInt(square.dataset.col as string);
 
     //Checking if the move is valid
-    if (movingPiece?.isValidMove(newRow, newCol)) {
+    if (movingPiece?.isValidMove(newRow, newCol)) 
+    { 
       //Taking hold of the piece to capture if there is one
       const pieceOnLandingSquare = square.getElementsByClassName("piece")[0];
       const pieceToCapture = pieceMap.get(pieceOnLandingSquare?.id);
 
       //Checking if there is a piece to capture and if it can be captured
-      if (!pieceToCapture || pieceToCapture?.canBeCaptured(movingPiece)) {
+      if (!pieceToCapture || pieceToCapture?.canBeCaptured(movingPiece))
+      {
         //Capturing the piece
         pieceToCapture?.capture();
 
@@ -49,4 +51,4 @@ const addDropEvents = (square: HTMLElement) => {
   });
 }
 
-export { addDragEvents, addDropEvents };
+export { addDragEvents, addDropEvents};

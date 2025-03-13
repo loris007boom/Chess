@@ -9,7 +9,7 @@ class Piece {
 
   constructor(color: string, row: number, col: number, name: string) {
     //Creating the img
-    const imgLink = `icons/${name}_${color}.png`
+    const imgLink = `icons/${name}_${color}.png`;
     const img = document.createElement("img");
     img.src = imgLink;
     img.alt = name;
@@ -55,9 +55,19 @@ class Piece {
   }
 
   capture() {
-    this.img.remove();
     gamePosition[this.row][this.col] = null;
     pieceMap.delete(this.img.id);
+
+    const capturedContainer =
+      this.color === "w"
+        ? document.getElementById("captured-white")
+        : document.getElementById("captured-black");
+
+    if (capturedContainer) {
+      this.img.style.width = "40px";
+      this.img.style.height = "40px";
+      capturedContainer.appendChild(this.img);
+    }
   }
 }
 
