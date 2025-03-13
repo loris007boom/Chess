@@ -25,17 +25,8 @@ const addDropEvents = (square) => {
         const newRow = parseInt(square.dataset.row);
         const newCol = parseInt(square.dataset.col);
         //Checking if the move is valid
-        if (movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isValidMove(newRow, newCol)) {
-            //Taking hold of the piece to capture if there is one
-            const pieceOnLandingSquare = square.getElementsByClassName("piece")[0];
-            const pieceToCapture = pieceMap.get(pieceOnLandingSquare === null || pieceOnLandingSquare === void 0 ? void 0 : pieceOnLandingSquare.id);
-            //Checking if there is a piece to capture and if it can be captured
-            if (!pieceToCapture || (pieceToCapture === null || pieceToCapture === void 0 ? void 0 : pieceToCapture.canBeCaptured(movingPiece))) {
-                //Capturing the piece
-                pieceToCapture === null || pieceToCapture === void 0 ? void 0 : pieceToCapture.capture();
-                //Moving the piece
-                movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.move(newRow, newCol, square);
-            }
+        if ((movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isValidMove(newRow, newCol)) && movingPiece.isPathFree(newRow, newCol)) {
+            movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.move(newRow, newCol, square);
         }
     });
 };

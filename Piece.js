@@ -15,6 +15,7 @@ class Piece {
         this.color = color;
         this.row = row;
         this.col = col;
+        this.points = 0;
         //Saving in the map the img id with its object for future references
         pieceMap.set(img.id, this);
     }
@@ -31,7 +32,27 @@ class Piece {
         return false;
     }
     isPathFree(newRow, newCol) {
-        return true;
+        //Checking the difference between the rows and columns
+        const numSquares = Math.abs(this.row - newRow === 0 ? this.col - newCol : this.row - newRow);
+        for (let i = 1; i < numSquares; i++) {
+            //Checking whether the row and column stay the same, are increased or reduced
+            const rowToCheck = this.row === newRow ? this.row : this.row < newRow ? this.row + i : this.row - i;
+            const colToCheck = this.col === newCol ? this.col : this.col < newCol ? this.col + i : this.col - i;
+            if (gamePosition[rowToCheck][colToCheck]) {
+                return false;
+            }
+        }
+        //Checking if there is a piece to capture on the landing square and if it can be captured
+        const lastRowToCheck = this.row === newRow ? this.row :
+            this.row < newRow ? this.row + numSquares : this.row - numSquares;
+        const lastColToCheck = this.col === newCol ? this.col :
+            this.col < newCol ? this.col + numSquares : this.col - numSquares;
+        const pieceToCapture = gamePosition[lastRowToCheck][lastColToCheck];
+        if (!pieceToCapture || pieceToCapture.canBeCaptured(this)) {
+            pieceToCapture === null || pieceToCapture === void 0 ? void 0 : pieceToCapture.capture();
+            return true;
+        }
+        return false;
     }
     canBeCaptured(movingPiece) {
         if (this.color !== movingPiece.color) {

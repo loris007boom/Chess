@@ -3,21 +3,28 @@ import { Piece } from "./Piece.js";
 class Pawn extends Piece {
     constructor(color, row, col) {
         super(color, row, col, "pawn");
+        this.points = 1;
     }
     isValidMove(newRow, newCol) {
         //Checking if the piece is moving in the allowed directions
         //First we check for the color because the pawns move in different directions
         if (this.color === "w") {
-            if (newRow === this.row - 1 && newCol === this.col ||
+            if ((newRow === this.row - 1 && newCol === this.col && !gamePosition[newRow][newCol]) ||
                 //Pawns can move two squares the first move
-                newRow === this.row - 2 && newCol === this.col && this.row === 6) {
+                (newRow === this.row - 2 && newCol === this.col && this.row === 6) ||
+                //Pawns can capture diagonally
+                (this.row - newRow === 1 && Math.abs(this.col - newCol) === 1 &&
+                    gamePosition[newRow][newCol])) {
                 return true;
             }
         }
         else if (this.color === "b") {
-            if (newRow === this.row + 1 && newCol === this.col ||
+            if ((newRow === this.row + 1 && newCol === this.col && !gamePosition[newRow][newCol]) ||
                 //Pawns can move two squares the first move
-                newRow === this.row + 2 && newCol === this.col && this.row === 1) {
+                (newRow === this.row + 2 && newCol === this.col && this.row === 1) ||
+                //Pawns can capture diagonally
+                (this.row - newRow === -1 && Math.abs(this.col - newCol) === 1 &&
+                    gamePosition[newRow][newCol])) {
                 return true;
             }
         }
@@ -27,32 +34,11 @@ class Pawn extends Piece {
 class Rook extends Piece {
     constructor(color, row, col) {
         super(color, row, col, "rook");
+        this.points = 5;
     }
     isValidMove(newRow, newCol) {
         //Checking if the piece is moving in the allowed directions
         if (newRow === this.row && newCol !== this.col || newCol === this.col && newRow !== this.row) {
-            //Checking if there are pieces on the way
-            if (this.isPathFree(newRow, newCol)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    isPathFree(newRow, newCol) {
-        if (newCol === this.col) {
-            for (let i = Math.min(this.row, newRow) + 1; i < Math.max(this.row, newRow); i++) {
-                if (gamePosition[i][this.col]) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        if (newRow === this.row) {
-            for (let i = Math.min(this.col, newCol) + 1; i < Math.max(this.col, newCol); i++) {
-                if (gamePosition[this.row][i]) {
-                    return false;
-                }
-            }
             return true;
         }
         return false;
@@ -61,6 +47,7 @@ class Rook extends Piece {
 class Knight extends Piece {
     constructor(color, row, col) {
         super(color, row, col, "knight");
+        this.points = 3;
     }
     isValidMove(newRow, newCol) {
         //Checking if the piece is moving in the allowed directions
@@ -70,55 +57,33 @@ class Knight extends Piece {
         }
         return false;
     }
+    //The knight can jump over other pieces
+    isPathFree(newRow, newCol) {
+        const pieceToCapture = gamePosition[newRow][newCol];
+        if (!pieceToCapture || pieceToCapture.canBeCaptured(this)) {
+            pieceToCapture === null || pieceToCapture === void 0 ? void 0 : pieceToCapture.capture();
+            return true;
+        }
+        return false;
+    }
 }
 class Bishop extends Piece {
     constructor(color, row, col) {
         super(color, row, col, "bishop");
+        this.points = 3;
     }
     isValidMove(newRow, newCol) {
         //Checking if the piece is moving in the allowed directions
         if (Math.abs(this.row - newRow) === Math.abs(this.col - newCol)) {
-            if (this.isPathFree(newRow, newCol)) {
-                return true;
-            }
+            return true;
         }
         return false;
-    }
-    isPathFree(newRow, newCol) {
-        if (Math.sign(newRow - this.row) !== -1 && Math.sign(newCol - this.col) !== -1) {
-            for (let i = 1; i < Math.abs(newRow - this.row); i++) {
-                if (gamePosition[Math.min(newRow, this.row) + i][Math.min(newCol, this.col) + i]) {
-                    return false;
-                }
-            }
-        }
-        else if (Math.sign(newRow - this.row) === -1 && Math.sign(newCol - this.col) === -1) {
-            for (let i = 1; i < Math.abs(newRow - this.row); i++) {
-                if (gamePosition[Math.max(newRow, this.row) - i][Math.max(newCol, this.col) - i]) {
-                    return false;
-                }
-            }
-        }
-        else if (Math.sign(newRow - this.row) === -1) {
-            for (let i = 1; i < Math.abs(newRow - this.row); i++) {
-                if (gamePosition[Math.max(newRow, this.row) - i][Math.min(newCol, this.col) + i]) {
-                    return false;
-                }
-            }
-        }
-        else if (Math.sign(newCol - this.col) === -1) {
-            for (let i = 1; i < Math.abs(newRow - this.row); i++) {
-                if (gamePosition[Math.min(newRow, this.row) + i][Math.max(newCol, this.col) - i]) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }
 class Queen extends Piece {
     constructor(color, row, col) {
         super(color, row, col, "queen");
+        this.points = 9;
     }
     isValidMove(newRow, newCol) {
         //Checking if the piece is moving in the allowed directions
@@ -135,8 +100,8 @@ class King extends Piece {
     }
     isValidMove(newRow, newCol) {
         //Checking if the piece is moving in the allowed directions
-        if (((newRow === this.row && (newCol === this.col + 1 || newCol === this.col - 1)) ||
-            (newCol === this.col && (newRow === this.row + 1 || newRow === this.row - 1))) ||
+        if ((newRow === this.row && Math.abs(newCol - this.col) === 1) ||
+            (newCol === this.col && Math.abs(newRow - this.row) === 1) ||
             (Math.abs(this.row - newRow) === 1 && Math.abs(this.col - newCol) === 1)) {
             return true;
         }
