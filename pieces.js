@@ -85,9 +85,38 @@ class Bishop extends Piece {
         return false;
     }
     isPathFree(newRow, newCol) {
+<<<<<<< HEAD
         for (let i = Math.min(this.row, newRow) + 1; i < Math.max(this.row, newRow); i++) {
             if (gamePosition[i][i]) {
                 return false;
+=======
+        if (Math.sign(newRow - this.row) !== -1 && Math.sign(newCol - this.col) !== -1) {
+            for (let i = 1; i < Math.abs(newRow - this.row); i++) {
+                if (gamePosition[Math.min(newRow, this.row) + i][Math.min(newCol, this.col) + i]) {
+                    return false;
+                }
+            }
+        }
+        else if (Math.sign(newRow - this.row) === -1 && Math.sign(newCol - this.col) === -1) {
+            for (let i = 1; i < Math.abs(newRow - this.row); i++) {
+                if (gamePosition[Math.max(newRow, this.row) - i][Math.max(newCol, this.col) - i]) {
+                    return false;
+                }
+            }
+        }
+        else if (Math.sign(newRow - this.row) === -1) {
+            for (let i = 1; i < Math.abs(newRow - this.row); i++) {
+                if (gamePosition[Math.max(newRow, this.row) - i][Math.min(newCol, this.col) + i]) {
+                    return false;
+                }
+            }
+        }
+        else if (Math.sign(newCol - this.col) === -1) {
+            for (let i = 1; i < Math.abs(newRow - this.row); i++) {
+                if (gamePosition[Math.min(newRow, this.row) + i][Math.max(newCol, this.col) - i]) {
+                    return false;
+                }
+>>>>>>> ad9a233f1daa214800b92fdc13393b1c1c0ab871
             }
         }
         return true;

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
       "module": "ESNext",
       "target": "ES6",
@@ -6,3 +7,12 @@
   },
   "include": ["**/*.ts"]
 }
+=======
+    "compilerOptions": {
+        "module": "ESNext",
+        "target": "ES6",
+        "strict": true
+    },
+    "include": ["**/*.ts"]
+}
+>>>>>>> ad9a233f1daa214800b92fdc13393b1c1c0ab871
