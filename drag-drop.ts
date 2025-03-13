@@ -1,8 +1,18 @@
 import { pieceMap } from "./board.js";
 
+let currentTurn = "w"; // Weiß beginnt
+
 // Drag & Drop Events
 const addDragEvents = (img: HTMLImageElement) => {
   img.addEventListener("dragstart", (e: DragEvent) => {
+    const piece = pieceMap.get(img.id);
+
+    // Überprüfen, ob die richtige Farbe am Zug ist
+    if (piece?.color !== currentTurn) {
+      e.preventDefault();
+      return;
+    }
+
     img.classList.add("dragging");
     setTimeout(() => img.classList.add("hide"), 0); // Hiding the image on drag
   });
@@ -31,24 +41,25 @@ const addDropEvents = (square: HTMLElement) => {
     const newCol = parseInt(square.dataset.col as string);
 
     //Checking if the move is valid
-    if (movingPiece?.isValidMove(newRow, newCol)) 
-    { 
+    if (movingPiece?.isValidMove(newRow, newCol)) {
       //Taking hold of the piece to capture if there is one
       const pieceOnLandingSquare = square.getElementsByClassName("piece")[0];
       const pieceToCapture = pieceMap.get(pieceOnLandingSquare?.id);
 
       //Checking if there is a piece to capture and if it can be captured
-      if (!pieceToCapture || pieceToCapture?.canBeCaptured(movingPiece))
-      {
+      if (!pieceToCapture || pieceToCapture?.canBeCaptured(movingPiece)) {
         //Capturing the piece
         pieceToCapture?.capture();
 
         //Moving the piece
         movingPiece?.move(newRow, newCol, square);
+
+        // Wechseln des Spielzugs
+        currentTurn = currentTurn === "w" ? "b" : "w";
       }
     }
 
   });
 }
 
-export { addDragEvents, addDropEvents};
+export { addDragEvents, addDropEvents };
