@@ -146,11 +146,6 @@ textarea {
   box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-.reStartButton:active {
-  transform: scale(0.95);
-  box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.2);
-}
-
 #pauseAll {
   padding: 12px 24px;
   font-size: 0.5em;
@@ -168,9 +163,4 @@ textarea {
   background: linear-gradient(135deg, #218838, #28a745);
   transform: scale(1.1);
   box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.4);
-}
-
-#pauseAll:active {
-  transform: scale(0.95);
-  box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.2);
 }
