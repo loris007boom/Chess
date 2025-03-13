@@ -61,24 +61,29 @@ if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft >= 30 * 60) {
 else {
     const counter1 = createCounter("counter1", timeLeft);
     const counter2 = createCounter("counter2", timeLeft);
+    let currentTurn = document.getElementById("currentTurn");
     counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
     counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
     let isPaused = false;
     (() => __awaiter(void 0, void 0, void 0, function* () {
         yield delay(1000);
+        if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "b") {
+            counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
+            counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+        }
+        else if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "w") {
+            counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+            counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+        }
         const pauseButton = document.getElementById("pauseAll");
         if (pauseButton) {
-            pauseButton.textContent = "Switch";
+            pauseButton.textContent = "Start";
             pauseButton.addEventListener("click", () => {
                 if (!counter1 || !counter2)
                     return;
                 if (isPaused) {
                     counter1.resume();
                     counter2.stop();
-                }
-                else {
-                    counter1.stop();
-                    counter2.resume();
                 }
                 isPaused = !isPaused;
             });
