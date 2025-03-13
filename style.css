@@ -46,19 +46,12 @@ body {
 }
 
 #counter {
-<<<<<<< HEAD
-  color: white;
-=======
-
   color: whitesmoke;
   font-family: Arial, sans-serif;
->>>>>>> ad9a233f1daa214800b92fdc13393b1c1c0ab871
   display: flex;
   justify-self: center;
   font-size: 40px;
   font-family: "Garamond", "Times New Roman", serif;
-<<<<<<< HEAD
-=======
   gap: 20px;
 }
 
@@ -70,7 +63,6 @@ button {
 
 .pause-button {
   color: white;
->>>>>>> ad9a233f1daa214800b92fdc13393b1c1c0ab871
 }
 
 input,
@@ -121,8 +113,4 @@ textarea {
   color: black;
   font-size: 11px;
   margin: 0;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ad9a233f1daa214800b92fdc13393b1c1c0ab871
