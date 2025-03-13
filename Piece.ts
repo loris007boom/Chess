@@ -1,15 +1,13 @@
 import { addDragEvents } from "./drag-drop.js";
 import { pieceMap, gamePosition } from "./board.js";
 
-class Piece
-{
+class Piece {
     img: HTMLImageElement;
     color: string;
     row: number;
     col: number;
 
-    constructor(color: string, row: number, col: number, name: string)
-    {
+    constructor(color: string, row: number, col: number, name: string) {
         //Creating the img
         const imgLink = `icons/${name}_${color}.png`
         const img = document.createElement("img");
@@ -30,8 +28,7 @@ class Piece
         pieceMap.set(img.id, this);
     }
 
-    move(newRow: number, newCol: number, newSquare: HTMLElement): void
-    {
+    move(newRow: number, newCol: number, newSquare: HTMLElement): void {
         //Appending the img on the new square
         newSquare.appendChild(this.img);
 
@@ -42,27 +39,22 @@ class Piece
         this.col = newCol;
     }
 
-    isValidMove(newRow: number, newCol: number): boolean
-    {
+    isValidMove(newRow: number, newCol: number): boolean {
         return false;
     }
 
-    isPathFree(newRow: number, newCol: number): boolean
-    {
+    isPathFree(newRow: number, newCol: number): boolean {
         return true;
     }
 
-    canBeCaptured(movingPiece: Piece)
-    {
-        if (this.color !== movingPiece.color)
-        {
+    canBeCaptured(movingPiece: Piece) {
+        if (this.color !== movingPiece.color) {
             return true;
         }
         return false;
     }
 
-    capture()
-    {
+    capture() {
         this.img.remove();
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
