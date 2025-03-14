@@ -1,6 +1,15 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 const delay = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 };
 const createCounter = (elementId, timeLeft) => {
     const counterElement = document.getElementById(elementId);
@@ -41,24 +50,37 @@ const createCounter = (elementId, timeLeft) => {
                 running = false;
             }
         },
-        resume: startTimer
+        resume: startTimer,
     };
 };
-let timeLeftInput = prompt("Wie viele Minuten wollt ihr spielen?", "") || "20";
-let timeLeft = parseInt(timeLeftInput) * 60;
-if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft >= 30 * 60) {
-    alert("Ungültige Eingabe!");
-}
-else {
-    const counter1 = createCounter("counter1", timeLeft);
-    const counter2 = createCounter("counter2", timeLeft);
-    let currentTurn = document.getElementById("currentTurn");
-    counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-    counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-    let isPaused = false;
+const bullet = document.getElementById("bullet");
+const blitz = document.getElementById("Blitz");
+const normal = document.getElementById("Normal");
+console.log(bullet.value, blitz.value, normal.value);
+let timeLeftInput = 0;
+const onClick = (value) => {
+    timeLeftInput = parseInt(value);
+};
+let timeLeft = timeLeftInput * 60;
+const counter1 = createCounter("counter1", timeLeft);
+const counter2 = createCounter("counter2", timeLeft);
+let currentTurn = document.getElementById("currentTurn");
+counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+let isPaused = false;
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield delay(1000);
+    if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "b") {
+        counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
+        counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+    }
+    else if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "w") {
+        counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+        counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+    }
     const pauseButton = document.getElementById("pauseAll");
     if (pauseButton) {
-        pauseButton.textContent = "switch";
+        pauseButton.textContent = "Start";
         pauseButton.addEventListener("click", () => {
             if (!counter1 || !counter2)
                 return;
@@ -66,11 +88,10 @@ else {
                 counter1.resume();
                 counter2.stop();
             }
-            else {
-                counter1.stop();
-                counter2.resume();
-            }
             isPaused = !isPaused;
         });
     }
-}
+    bullet.addEventListener("click", () => onClick(bullet.value));
+    blitz.addEventListener("click", () => onClick(blitz.value));
+    normal.addEventListener("click", () => onClick(normal.value));
+}))();
