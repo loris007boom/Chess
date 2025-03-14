@@ -1,6 +1,5 @@
-const delay = (ms: number) => {
-    return new Promise( resolve => setTimeout(resolve, ms) );
-}
+import { getCurrentTurn } from './drag-drop.js';
+
 const createCounter = (elementId: string, timeLeft: number) => {
     const counterElement = document.getElementById(elementId);
     if (!counterElement) {
@@ -33,7 +32,6 @@ const createCounter = (elementId: string, timeLeft: number) => {
     };
 
     updateDisplay();
-    startTimer();
 
     return {
         stop: () => {
@@ -47,35 +45,43 @@ const createCounter = (elementId: string, timeLeft: number) => {
     };
 };
 
-let timeLeftInput: string = prompt("Wie viele Minuten wollt ihr spielen?", "") || "20";
-let timeLeft = parseInt(timeLeftInput) * 60;
+// Get user input safely
+let timeLeftInput: string | null = prompt("Wie viele Minuten wollt ihr spielen?", "20");
+let timeLeft = timeLeftInput ? parseInt(timeLeftInput) * 60 : 1200;
 
-if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft >= 30 * 60) {
+if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft > 30 * 60) {
     alert("Ungültige Eingabe!");
 } else {
     const counter1 = createCounter("counter1", timeLeft);
     const counter2 = createCounter("counter2", timeLeft);
-    let currentTurn = document.getElementById("currentTurn");
-    
+
+    if (!counter1 || !counter2) {
+        console.error("Timer konnten nicht initialisiert werden.");
+    }
+
     counter1?.stop();
     counter2?.stop();
-    
-    let isPaused = false;
 
-    const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
-    if (pauseButton) {
-        pauseButton.textContent = "switch";
-        pauseButton.addEventListener("click", () => {
-            if (!counter1 || !counter2) return;
-            
-            if (isPaused) {
-                counter1.resume();
-                counter2.stop();
-            } else {
-                counter1.stop();
-                counter2.resume();
-            }
-            isPaused = !isPaused;
-        });
-    } 
+let isPaused = false;
+ 
+const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
+  if (pauseButton) {
+    pauseButton.textContent = "Start";
+    pauseButton.addEventListener("click", () => {
+
+        isPaused = true;
+        if (isPaused) {
+        setInterval(function () {
+            if (getCurrentTurn() === "b") {
+                counter1?.resume();
+                counter2?.stop();
+            } else if (getCurrentTurn() === "w") {
+                counter1?.stop();
+                counter2?.resume();
+            } else
+            return;
+          }, 10);
+      }
+    });
+  }
 }

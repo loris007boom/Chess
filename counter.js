@@ -1,7 +1,4 @@
-"use strict";
-const delay = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-};
+import { getCurrentTurn } from './drag-drop.js';
 const createCounter = (elementId, timeLeft) => {
     const counterElement = document.getElementById(elementId);
     if (!counterElement) {
@@ -32,7 +29,6 @@ const createCounter = (elementId, timeLeft) => {
         }, 1000);
     };
     updateDisplay();
-    startTimer();
     return {
         stop: () => {
             if (timer) {
@@ -44,33 +40,40 @@ const createCounter = (elementId, timeLeft) => {
         resume: startTimer
     };
 };
-let timeLeftInput = prompt("Wie viele Minuten wollt ihr spielen?", "") || "20";
-let timeLeft = parseInt(timeLeftInput) * 60;
-if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft >= 30 * 60) {
+// Get user input safely
+let timeLeftInput = prompt("Wie viele Minuten wollt ihr spielen?", "20");
+let timeLeft = timeLeftInput ? parseInt(timeLeftInput) * 60 : 1200;
+if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft > 30 * 60) {
     alert("Ungültige Eingabe!");
 }
 else {
     const counter1 = createCounter("counter1", timeLeft);
     const counter2 = createCounter("counter2", timeLeft);
-    let currentTurn = document.getElementById("currentTurn");
+    if (!counter1 || !counter2) {
+        console.error("Timer konnten nicht initialisiert werden.");
+    }
     counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
     counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
     let isPaused = false;
     const pauseButton = document.getElementById("pauseAll");
     if (pauseButton) {
-        pauseButton.textContent = "switch";
+        pauseButton.textContent = "Start";
         pauseButton.addEventListener("click", () => {
-            if (!counter1 || !counter2)
-                return;
+            isPaused = true;
             if (isPaused) {
-                counter1.resume();
-                counter2.stop();
+                setInterval(function () {
+                    if (getCurrentTurn() === "b") {
+                        counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
+                        counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+                    }
+                    else if (getCurrentTurn() === "w") {
+                        counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+                        counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+                    }
+                    else
+                        return;
+                }, 10);
             }
-            else {
-                counter1.stop();
-                counter2.resume();
-            }
-            isPaused = !isPaused;
         });
     }
 }
