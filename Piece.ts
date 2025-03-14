@@ -2,16 +2,17 @@ import { addDragEvents } from "./drag-drop.js";
 import { pieceMap, gamePosition } from "./board.js";
 
 
-class Piece{
+class Piece {
     img: HTMLImageElement;
     color: string;
     row: number;
     col: number;
     points: number;
 
+    // static blackScore: number = 0;
+    // static whiteScore: number = 0;
 
-    constructor(color: string, row: number, col: number, name: string) 
-    {
+    constructor(color: string, row: number, col: number, name: string) {
         //Creating the img
         const imgLink = `icons/${name}_${color}.png`;
         const img = document.createElement("img");
@@ -35,12 +36,11 @@ class Piece{
         pieceMap.set(img.id, this);
     }
 
-    move(newRow: number, newCol: number, newSquare: HTMLElement): void 
-    {
+    move(newRow: number, newCol: number, newSquare: HTMLElement): void {
         //Appending the img on the new square
         newSquare.appendChild(this.img);
 
-    
+
         //Updating the game position
         gamePosition[this.row][this.col] = null;
         gamePosition[newRow][newCol] = this;
@@ -48,66 +48,81 @@ class Piece{
         this.col = newCol;
     }
 
-    isValidMove(newRow: number, newCol: number): boolean
-    {
+    isValidMove(newRow: number, newCol: number): boolean {
         return false;
     }
 
-    isPathFree(newRow: number, newCol: number): boolean
-    {
+    isPathFree(newRow: number, newCol: number): boolean {
         //Checking the difference between the rows and columns
         const numSquares = Math.abs(this.row - newRow === 0 ? this.col - newCol : this.row - newRow);
-        for (let i = 1; i < numSquares; i++)
-        {
+        for (let i = 1; i < numSquares; i++) {
             //Checking whether the row and column stay the same, are increased or reduced
             const rowToCheck = this.row === newRow ? this.row : this.row < newRow ? this.row + i : this.row - i;
             const colToCheck = this.col === newCol ? this.col : this.col < newCol ? this.col + i : this.col - i;
-            
-            if (gamePosition[rowToCheck][colToCheck])
-            {
+
+            if (gamePosition[rowToCheck][colToCheck]) {
                 return false;
             }
         }
-        
+
         //Checking if there is a piece to capture on the landing square and if it can be captured
-        const lastRowToCheck = this.row === newRow ? this.row : 
-                               this.row < newRow ? this.row + numSquares : this.row - numSquares;
-        const lastColToCheck = this.col === newCol ? this.col : 
-                               this.col < newCol ? this.col + numSquares : this.col - numSquares;
+        const lastRowToCheck = this.row === newRow ? this.row :
+            this.row < newRow ? this.row + numSquares : this.row - numSquares;
+        const lastColToCheck = this.col === newCol ? this.col :
+            this.col < newCol ? this.col + numSquares : this.col - numSquares;
         const pieceToCapture = gamePosition[lastRowToCheck][lastColToCheck];
-        if (!pieceToCapture || pieceToCapture.canBeCaptured(this))
-        {
+        if (!pieceToCapture || pieceToCapture.canBeCaptured(this)) {
             pieceToCapture?.capture();
             return true;
         }
         return false;
     }
 
-    canBeCaptured(movingPiece: Piece)
-    {
-        if (this.color !== movingPiece.color)
-        {
+    canBeCaptured(movingPiece: Piece) {
+        if (this.color !== movingPiece.color) {
             return true;
         }
         return false;
     }
 
-    capture()
-    {
+    capture() {
+
         this.img.remove();
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
 
-    const capturedContainer =
-      this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
+        // if (this.color === "w") {
+        //     console.log("Schwarzer Score1:", Piece.blackScore);
+        //     console.log("Schwarzer points1:", this.points);
+        //     Piece.blackScore += this.points;
+        //     console.log("Schwarzer Score2:", Piece.blackScore);
+        //     console.log("Schwarzer points2:", this.points);
 
-    if (capturedContainer) {
-      this.img.style.width = "40px";
-      this.img.style.height = "40px";
-      capturedContainer.appendChild(this.img);
+        // } else if (this.color === "b") {
+        //     console.log("Weisser Score1:", Piece.whiteScore);
+        //     console.log("Weisser points1:", this.points);
+        //     Piece.whiteScore += this.points;
+        //     console.log("Weisser Score2:", Piece.whiteScore);
+        //     console.log("Weisser points1:", this.points);
+        // }
 
+        const capturedContainer =
+            this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
+
+        // const scoreCounter =
+        //     this.color === "w" ? document.getElementById("captured-white-score") : document.getElementById("captured-black-score");
+
+        // if (scoreCounter) {
+        //     console.log('jbhg')
+        //     scoreCounter.textContent = `Score: ${this.color === "w" ? Piece.whiteScore : Piece.blackScore}`;
+        // }
+
+        if (capturedContainer) {
+            this.img.style.width = "40px";
+            this.img.style.height = "40px";
+            capturedContainer.appendChild(this.img);
+        }
     }
-  }
 }
 
 export { Piece };

@@ -12,9 +12,8 @@ const createCounter = (elementId: string, timeLeft: number) => {
   const updateDisplay = () => {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
-    counterElement.textContent = `${minutes}:${
-      seconds < 10 ? "0" + seconds : seconds
-    }`;
+    counterElement.textContent = `${minutes}:${seconds < 10 ? "0" + seconds : seconds
+      }`;
   };
 
   const startTimer = () => {
@@ -45,19 +44,23 @@ const createCounter = (elementId: string, timeLeft: number) => {
     resume: startTimer,
   };
 };
+let selectedTime: number | null = null;
+let timeLeft: number = 1800;
+document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) => {
+  button.addEventListener('click', function () {
+    selectedTime = parseInt(this.value, 10);
+    console.log(selectedTime)
 
-let timeLeftInput: string | null = prompt("Wie viele Minuten wollt ihr spielen?", "20");
-let timeLeft = timeLeftInput ? parseInt(timeLeftInput) * 60 : 1200;
-
-if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft > 30 * 60) {
-    alert("Ungültige Eingabe!");
-} else {
-    const counter1 = createCounter("counter1", timeLeft);
-    const counter2 = createCounter("counter2", timeLeft);
-
-    if (!counter1 || !counter2) {
-        console.error("Timer konnten nicht initialisiert werden.");
+    if (selectedTime !== null) {
+      timeLeft = selectedTime * 60;
+      console.log(timeLeft);
     }
+  });
+});
+
+const counter1 = createCounter("counter1", timeLeft);
+const counter2 = createCounter("counter2", timeLeft);
+let currentTurn = document.getElementById("currentTurn");
 
     counter1?.stop();
     counter2?.stop();
@@ -84,7 +87,7 @@ const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
       }
     });
   }
-}
+
 const bullet = document.getElementById("bullet") as HTMLButtonElement;
 const blitz = document.getElementById("Blitz") as HTMLButtonElement;
 const normal = document.getElementById("Normal") as HTMLButtonElement;
