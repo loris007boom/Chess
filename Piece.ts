@@ -88,20 +88,22 @@ class Piece {
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
 
-        let blackScore: number = 0;
+
         const capturedContainer =
             this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
 
+        let blackScore: number = 0;
+        let whiteScore: number = 3;
         const scoreCounter =
             this.color === "w" ? document.getElementById("captured-white-score") : document.getElementById("captured-black-score") as HTMLParagraphElement;
-        scoreCounter!.textContent = 'Hallo Welt'
+
+        scoreCounter!.textContent = `Score: ${this.color === "w" ? whiteScore : blackScore}`;
 
         if (capturedContainer && scoreCounter) {
             this.img.style.width = "40px";
             this.img.style.height = "40px";
             capturedContainer.appendChild(this.img);
             capturedContainer.appendChild(scoreCounter);
-
         }
     }
 }

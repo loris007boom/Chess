@@ -64,10 +64,12 @@ class Piece {
         this.img.remove();
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
-        const scoreCounter = document.createElement('p'); // Typ fehlt 
-        scoreCounter.textContent = 'Hallo Welt';
         const capturedContainer = this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
-        if (capturedContainer) {
+        let blackScore = 0;
+        let whiteScore = 3;
+        const scoreCounter = this.color === "w" ? document.getElementById("captured-white-score") : document.getElementById("captured-black-score");
+        scoreCounter.textContent = `Score: ${this.color === "w" ? whiteScore : blackScore}`;
+        if (capturedContainer && scoreCounter) {
             this.img.style.width = "40px";
             this.img.style.height = "40px";
             capturedContainer.appendChild(this.img);

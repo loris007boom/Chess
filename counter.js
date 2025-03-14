@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 const delay = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
@@ -65,28 +56,21 @@ else {
     counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
     counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
     let isPaused = false;
-    (() => __awaiter(void 0, void 0, void 0, function* () {
-        yield delay(1000);
-        if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "b") {
-            counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
-            counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-        }
-        else if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "w") {
-            counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-            counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
-        }
-        const pauseButton = document.getElementById("pauseAll");
-        if (pauseButton) {
-            pauseButton.textContent = "Start";
-            pauseButton.addEventListener("click", () => {
-                if (!counter1 || !counter2)
-                    return;
-                if (isPaused) {
-                    counter1.resume();
-                    counter2.stop();
-                }
-                isPaused = !isPaused;
-            });
-        }
-    }))();
+    const pauseButton = document.getElementById("pauseAll");
+    if (pauseButton) {
+        pauseButton.textContent = "switch";
+        pauseButton.addEventListener("click", () => {
+            if (!counter1 || !counter2)
+                return;
+            if (isPaused) {
+                counter1.resume();
+                counter2.stop();
+            }
+            else {
+                counter1.stop();
+                counter2.resume();
+            }
+            isPaused = !isPaused;
+        });
+    }
 }
