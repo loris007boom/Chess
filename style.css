@@ -36,7 +36,7 @@ body {
 .middle-left {
   display: flex;
   justify-content: center;
-  top: 150px;
+  top: 400px;
   left: 200px;
 }
 
@@ -44,7 +44,6 @@ body {
   display: flex;
   top: 600px;
   right: 200px;
-
 }
 
 .square {
@@ -57,13 +56,14 @@ body {
 }
 
 #counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: whitesmoke;
   font-family: Arial, sans-serif;
-  display: flex;
-  justify-self: center;
   font-size: 40px;
   font-family: "Garamond", "Times New Roman", serif;
-  gap: 20px;
+  gap: 10px;
 }
 
 button {
@@ -127,7 +127,7 @@ textarea {
 }
 
 .reStartButton {
-  padding: 12px 24px;
+  padding: 6px 24px;
   font-size: 1.2em;
   font-weight: bold;
   border: none;
@@ -166,7 +166,8 @@ textarea {
 }
 
 #pauseAll {
-  padding: 12px 24px;
+  order: -1;
+  padding: 6px 24px;
   font-size: 0.5em;
   font-weight: bold;
   border: none;
@@ -176,6 +177,10 @@ textarea {
   border-radius: 8px;
   transition: all 0.3s ease-in-out;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+}
+.counter-container {
+  display: flex;
+  gap: 20px;
 }
 
 #pauseAll:hover {
