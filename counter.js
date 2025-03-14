@@ -53,15 +53,18 @@ const createCounter = (elementId, timeLeft) => {
         resume: startTimer,
     };
 };
-const bullet = document.getElementById("bullet");
-const blitz = document.getElementById("Blitz");
-const normal = document.getElementById("Normal");
-console.log(bullet.value, blitz.value, normal.value);
-let timeLeftInput = 0;
-const onClick = (value) => {
-    timeLeftInput = parseInt(value);
-};
-let timeLeft = timeLeftInput * 60;
+let selectedTime = null;
+let timeLeft = 0;
+document.querySelectorAll('.TimeButtons').forEach((button) => {
+    button.addEventListener('click', function () {
+        selectedTime = parseInt(this.value, 10);
+        console.log(selectedTime);
+        if (selectedTime !== null) {
+            timeLeft = selectedTime * 60;
+            console.log(timeLeft);
+        }
+    });
+});
 const counter1 = createCounter("counter1", timeLeft);
 const counter2 = createCounter("counter2", timeLeft);
 let currentTurn = document.getElementById("currentTurn");
@@ -91,7 +94,4 @@ let isPaused = false;
             isPaused = !isPaused;
         });
     }
-    bullet.addEventListener("click", () => onClick(bullet.value));
-    blitz.addEventListener("click", () => onClick(blitz.value));
-    normal.addEventListener("click", () => onClick(normal.value));
 }))();

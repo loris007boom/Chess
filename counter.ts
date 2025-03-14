@@ -1,8 +1,6 @@
 const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
-return new Promise(resolve => setTimeout(resolve, ms));
-}
 const createCounter = (elementId: string, timeLeft: number) => {
   const counterElement = document.getElementById(elementId);
   if (!counterElement) {
@@ -12,8 +10,6 @@ const createCounter = (elementId: string, timeLeft: number) => {
 
   let timer: number | null = null;
   let running = false;
-  let timer: number | null = null;
-  let running: boolean = false;
 
   const updateDisplay = () => {
     const minutes = Math.floor(timeLeft / 60);
@@ -51,18 +47,19 @@ const createCounter = (elementId: string, timeLeft: number) => {
     resume: startTimer,
   };
 };
+let selectedTime: number | null = null;
+let timeLeft: number = 0;
+document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) => {
+  button.addEventListener('click', function () {
+    selectedTime = parseInt(this.value, 10);
+    console.log(selectedTime)
 
-const bullet = document.getElementById("bullet") as HTMLButtonElement;
-const blitz = document.getElementById("Blitz") as HTMLButtonElement;
-const normal = document.getElementById("Normal") as HTMLButtonElement;
-console.log(bullet.value, blitz.value, normal.value);
-let timeLeftInput: number = 0;
-
-function getValue() { }
-// bullet?.addEventListener("click", () => onClick(bullet.value));
-// blitz?.addEventListener("click", () => onClick(blitz.value));
-// normal?.addEventListener("click", () => onClick(normal.value));
-let timeLeft = timeLeftInput * 60;
+    if (selectedTime !== null) {
+      timeLeft = selectedTime * 60;
+      console.log(timeLeft);
+    }
+  });
+});
 
 const counter1 = createCounter("counter1", timeLeft);
 const counter2 = createCounter("counter2", timeLeft);
