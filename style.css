@@ -10,6 +10,7 @@ body {
   align-items: center;
   gap: 20px;
 }
+
 #board {
   display: grid;
   grid-template-columns: repeat(8, 50px);
@@ -25,8 +26,8 @@ body {
   position: absolute;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 5px;
+  flex-wrap: wrap-reverse;
+  gap: 2px;
   width: 200px;
   height: 200px;
   padding: 10px;
@@ -41,9 +42,9 @@ body {
 
 .middle-right {
   display: flex;
-  justify-content: center;
-  bottom: 100px;
+  top: 600px;
   right: 200px;
+
 }
 
 .square {
