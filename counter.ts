@@ -61,30 +61,21 @@ if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft >= 30 * 60) {
     counter2?.stop();
     
     let isPaused = false;
-    
-    (async () => { 
-        await delay(1000);
-    
-        if (currentTurn?.textContent === "b") {
-            counter1?.resume();
-            counter2?.stop();
-        } else if (currentTurn?.textContent === "w") {
-            counter1?.stop();
-            counter2?.resume();
-        }
 
     const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
     if (pauseButton) {
-        pauseButton.textContent = "Start";
+        pauseButton.textContent = "switch";
         pauseButton.addEventListener("click", () => {
             if (!counter1 || !counter2) return;
             
             if (isPaused) {
                 counter1.resume();
                 counter2.stop();
-            } 
+            } else {
+                counter1.stop();
+                counter2.resume();
+            }
             isPaused = !isPaused;
         });
-    }
-    })();   
+    } 
 }
