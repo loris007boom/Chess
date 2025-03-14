@@ -16,6 +16,33 @@ const createCounter = (elementId: string, timeLeft: number) => {
     counterElement.textContent = `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
   };
 
+  const showWinnerPopup = () => {
+    let winColor: string = getCurrentTurn() === "w" ? "Black" : "White";
+
+    const popUp = document.getElementById("popUpID") as HTMLDivElement | null;
+    if (!popUp) {
+      console.error("Fehler: Das Pop-up-Element wurde nicht gefunden.");
+      return;
+    }
+
+    popUp.classList.add("popUp");
+    popUp.style.display = "flex";
+
+    const reStartButton = document.createElement("button");
+    reStartButton.classList.add("reStartButton");
+    reStartButton.textContent = "Restart";
+
+    const message = document.createElement("p") as HTMLParagraphElement;
+    message.classList.add("message");
+    message.textContent = `${winColor} Player Won! 🎉🏆`;
+
+    reStartButton.addEventListener("click", () => window.location.reload());
+
+    popUp.innerHTML = ""; // Verhindert doppeltes Einfügen
+    popUp.appendChild(message);
+    popUp.appendChild(reStartButton);
+  };
+
   const startTimer = () => {
     if (running) return;
     running = true;
@@ -24,9 +51,7 @@ const createCounter = (elementId: string, timeLeft: number) => {
         timeLeft--;
         updateDisplay();
       } else {
-        clearInterval(timer!);
-        counterElement.textContent = "Zeit abgelaufen!";
-        running = false;
+        showWinnerPopup();
       }
     }, 1000);
   };
@@ -66,11 +91,14 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
       counter2?.stop();
 
       const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
+      const TimeButtonContainer = document.getElementById('TimeButtonContainer') as HTMLDialogElement;
+
       if (pauseButton) {
-        pauseButton.textContent = "Start"; // Initial button text
 
         pauseButton.addEventListener("click", () => {
-          // Start the timer based on the current turn
+          // Entfernt die Buttons
+          TimeButtonContainer.remove();
+
           setInterval(function () {
             if (getCurrentTurn() === "b") {
               counter1?.resume();
@@ -79,9 +107,8 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
               counter1?.stop();
               counter2?.resume();
             }
-          }, 1000);  // Using a longer interval to match timer update rate
-        }
-        );
+          }, 1000);
+        });
       }
     }
   });
