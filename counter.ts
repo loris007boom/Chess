@@ -1,5 +1,5 @@
 const delay = (ms: number) => {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 const createCounter = (elementId: string, timeLeft: number) => {
     const counterElement = document.getElementById(elementId);
@@ -9,7 +9,7 @@ const createCounter = (elementId: string, timeLeft: number) => {
     }
 
     let timer: number | null = null;
-    let running = false;
+    let running: boolean = false;
 
     const updateDisplay = () => {
         const minutes = Math.floor(timeLeft / 60);
@@ -56,15 +56,15 @@ if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft >= 30 * 60) {
     const counter1 = createCounter("counter1", timeLeft);
     const counter2 = createCounter("counter2", timeLeft);
     let currentTurn = document.getElementById("currentTurn");
-    
+
     counter1?.stop();
     counter2?.stop();
-    
+
     let isPaused = false;
-    
-    (async () => { 
+
+    (async () => {
         await delay(1000);
-    
+
         if (currentTurn?.textContent === "b") {
             counter1?.resume();
             counter2?.stop();
@@ -73,18 +73,18 @@ if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft >= 30 * 60) {
             counter2?.resume();
         }
 
-    const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
-    if (pauseButton) {
-        pauseButton.textContent = "Start";
-        pauseButton.addEventListener("click", () => {
-            if (!counter1 || !counter2) return;
-            
-            if (isPaused) {
-                counter1.resume();
-                counter2.stop();
-            } 
-            isPaused = !isPaused;
-        });
-    }
-    })();   
+        const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
+        if (pauseButton) {
+            pauseButton.textContent = "Start";
+            pauseButton.addEventListener("click", () => {
+                if (!counter1 || !counter2) return;
+
+                if (isPaused) {
+                    counter1.resume();
+                    counter2.stop();
+                }
+                isPaused = !isPaused;
+            });
+        }
+    })();
 }
