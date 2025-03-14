@@ -58,9 +58,10 @@ const blitz = document.getElementById("Blitz");
 const normal = document.getElementById("Normal");
 console.log(bullet.value, blitz.value, normal.value);
 let timeLeftInput = 0;
-const onClick = (value) => {
-    timeLeftInput = parseInt(value);
-};
+function getValue() { }
+// bullet?.addEventListener("click", () => onClick(bullet.value));
+// blitz?.addEventListener("click", () => onClick(blitz.value));
+// normal?.addEventListener("click", () => onClick(normal.value));
 let timeLeft = timeLeftInput * 60;
 const counter1 = createCounter("counter1", timeLeft);
 const counter2 = createCounter("counter2", timeLeft);
@@ -91,7 +92,4 @@ let isPaused = false;
             isPaused = !isPaused;
         });
     }
-    bullet.addEventListener("click", () => onClick(bullet.value));
-    blitz.addEventListener("click", () => onClick(blitz.value));
-    normal.addEventListener("click", () => onClick(normal.value));
 }))();
