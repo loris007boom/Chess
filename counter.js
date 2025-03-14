@@ -17,7 +17,7 @@ const createCounter = (elementId, timeLeft) => {
         console.error(`Element mit ID '${elementId}' nicht gefunden.`);
         return null;
     }
-    let timer = null;
+    let timerId = null;
     let running = false;
     const updateDisplay = () => {
         const minutes = Math.floor(timeLeft / 60);
@@ -28,25 +28,25 @@ const createCounter = (elementId, timeLeft) => {
         if (running)
             return;
         running = true;
-        timer = setInterval(() => {
+        timerId = setInterval(() => {
             if (timeLeft > 0) {
                 timeLeft--;
                 updateDisplay();
             }
             else {
-                clearInterval(timer);
+                clearInterval(timerId);
                 counterElement.textContent = "Zeit abgelaufen!";
                 running = false;
             }
         }, 1000);
     };
     updateDisplay();
-    startTimer();
     return {
+        start: startTimer,
         stop: () => {
-            if (timer) {
-                clearInterval(timer);
-                timer = null;
+            if (timerId) {
+                clearInterval(timerId);
+                timerId = null;
                 running = false;
             }
         },
@@ -54,32 +54,39 @@ const createCounter = (elementId, timeLeft) => {
     };
 };
 let selectedTime = null;
-let timeLeft = 0;
+let counter1 = null;
+let counter2 = null;
+let currentTurn = document.getElementById("currentTurn");
 document.querySelectorAll('.TimeButtons').forEach((button) => {
     button.addEventListener('click', function () {
-        selectedTime = parseInt(this.value, 10);
-        console.log(selectedTime);
+        selectedTime = parseInt(this.value, 10); // Wert des Buttons (Minuten) wird als Zahl gespeichert
         if (selectedTime !== null) {
-            timeLeft = selectedTime * 60;
-            console.log(timeLeft);
+            const timeLeft = selectedTime * 60; // Umwandlung der Minuten in Sekunden
+            counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+            counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+            counter1 = createCounter("counter1", timeLeft);
+            counter2 = createCounter("counter2", timeLeft);
+            if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "b") {
+                counter1 === null || counter1 === void 0 ? void 0 : counter1.start();
+                counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+            }
+            else if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "w") {
+                counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+                counter2 === null || counter2 === void 0 ? void 0 : counter2.start();
+            }
         }
     });
 });
-const counter1 = createCounter("counter1", timeLeft);
-const counter2 = createCounter("counter2", timeLeft);
-let currentTurn = document.getElementById("currentTurn");
-counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
 let isPaused = false;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     yield delay(1000);
     if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "b") {
-        counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
-        counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+        counter1.start();
+        counter2.stop();
     }
     else if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "w") {
-        counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-        counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+        counter1.stop();
+        counter2.start();
     }
     const pauseButton = document.getElementById("pauseAll");
     if (pauseButton) {
@@ -89,6 +96,10 @@ let isPaused = false;
                 return;
             if (isPaused) {
                 counter1.resume();
+                counter2.stop();
+            }
+            else {
+                counter1.stop();
                 counter2.stop();
             }
             isPaused = !isPaused;
