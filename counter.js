@@ -43,16 +43,13 @@ const createCounter = (elementId, timeLeft) => {
 };
 let selectedTime = null;
 let timeLeft;
-let isGameRunning = false;
 let counter1 = null;
 let counter2 = null;
 document.querySelectorAll('.TimeButtons').forEach((button) => {
     button.addEventListener('click', function () {
         selectedTime = parseInt(this.value, 10);
-        console.log(selectedTime);
         if (selectedTime !== null) {
             timeLeft = selectedTime * 60;
-            console.log(timeLeft);
             counter1 = createCounter("counter1", timeLeft);
             counter2 = createCounter("counter2", timeLeft);
             counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
@@ -61,21 +58,17 @@ document.querySelectorAll('.TimeButtons').forEach((button) => {
             if (pauseButton) {
                 pauseButton.textContent = "Start"; // Initial button text
                 pauseButton.addEventListener("click", () => {
-                    if (!isGameRunning) {
-                        // Start the game
-                        isGameRunning = true;
-                        // Start the timer based on the current turn
-                        setInterval(function () {
-                            if (getCurrentTurn() === "b") {
-                                counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
-                                counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-                            }
-                            else if (getCurrentTurn() === "w") {
-                                counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-                                counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
-                            }
-                        }, 1000); // Using a longer interval to match timer update rate
-                    }
+                    // Start the timer based on the current turn
+                    setInterval(function () {
+                        if (getCurrentTurn() === "b") {
+                            counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
+                            counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+                        }
+                        else if (getCurrentTurn() === "w") {
+                            counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+                            counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+                        }
+                    }, 1000); // Using a longer interval to match timer update rate
                 });
             }
         }
