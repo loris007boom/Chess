@@ -134,9 +134,9 @@ textarea {
   transform: translate(-50%, -50%);
   width: 350px;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(40, 40, 40, 0.95);
   border-radius: 12px;
-  box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.8);
+  box-shadow: 0px 0px 15px rgba(150, 150, 150, 0.8);
   text-align: center;
   color: white;
   font-family: 'Arial', sans-serif;
@@ -146,13 +146,15 @@ textarea {
 .message {
   font-size: 24px;
   font-weight: bold;
-  color: gold;
+  color: #b8a1ff;
+  /* Passend zu den Schachfiguren oben */
   margin-bottom: 15px;
 }
 
 .reStartButton {
-  background: gold;
-  color: black;
+  background: #6a5acd;
+  /* Dunklerer Lila-Ton */
+  color: white;
   border: none;
   padding: 10px 20px;
   font-size: 18px;
@@ -160,6 +162,10 @@ textarea {
   border-radius: 8px;
   cursor: pointer;
   transition: 0.3s;
+}
+
+.reStartButton:hover {
+  background: #4b3a9a;
 }
 
 .TimeButtons {
