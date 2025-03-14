@@ -9,6 +9,8 @@ class Piece {
     col: number;
     points: number;
 
+    // static blackScore: number = 0;
+    // static whiteScore: number = 0;
 
     constructor(color: string, row: number, col: number, name: string) {
         //Creating the img
@@ -84,26 +86,41 @@ class Piece {
     }
 
     capture() {
+
         this.img.remove();
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
 
+        // if (this.color === "w") {
+        //     console.log("Schwarzer Score1:", Piece.blackScore);
+        //     console.log("Schwarzer points1:", this.points);
+        //     Piece.blackScore += this.points;
+        //     console.log("Schwarzer Score2:", Piece.blackScore);
+        //     console.log("Schwarzer points2:", this.points);
+
+        // } else if (this.color === "b") {
+        //     console.log("Weisser Score1:", Piece.whiteScore);
+        //     console.log("Weisser points1:", this.points);
+        //     Piece.whiteScore += this.points;
+        //     console.log("Weisser Score2:", Piece.whiteScore);
+        //     console.log("Weisser points1:", this.points);
+        // }
 
         const capturedContainer =
             this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
 
-        let blackScore: number = 0;
-        let whiteScore: number = 3;
-        const scoreCounter =
-            this.color === "w" ? document.getElementById("captured-white-score") : document.getElementById("captured-black-score") as HTMLParagraphElement;
+        // const scoreCounter =
+        //     this.color === "w" ? document.getElementById("captured-white-score") : document.getElementById("captured-black-score");
 
-        scoreCounter!.textContent = `Score: ${this.color === "w" ? whiteScore : blackScore}`;
+        // if (scoreCounter) {
+        //     console.log('jbhg')
+        //     scoreCounter.textContent = `Score: ${this.color === "w" ? Piece.whiteScore : Piece.blackScore}`;
+        // }
 
-        if (capturedContainer && scoreCounter) {
+        if (capturedContainer) {
             this.img.style.width = "40px";
             this.img.style.height = "40px";
             capturedContainer.appendChild(this.img);
-            capturedContainer.appendChild(scoreCounter);
         }
     }
 }
