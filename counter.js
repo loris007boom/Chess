@@ -37,7 +37,7 @@ const createCounter = (elementId, timeLeft) => {
                 running = false;
             }
         },
-        resume: startTimer
+        resume: startTimer,
     };
 };
 // Get user input safely
@@ -77,3 +77,11 @@ else {
         });
     }
 }
+const bullet = document.getElementById("bullet");
+const blitz = document.getElementById("Blitz");
+const normal = document.getElementById("Normal");
+console.log(bullet.value, blitz.value, normal.value);
+function getValue() { }
+// bullet?.addEventListener("click", () => onClick(bullet.value));
+// blitz?.addEventListener("click", () => onClick(blitz.value));
+// normal?.addEventListener("click", () => onClick(normal.value));
