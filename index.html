@@ -16,21 +16,20 @@
 
       <button class="TimeButtons" id="Blitz" value="1">1 Minute</button>
 
-      <button class="TimeButtons" id="Normal" value="20">20 Minuten</button>
+        <button class="TimeButtons" id="Normal" value="20">20 Minuten</button>
+      </div>
+      <div id="counter">
+        <div id="counter1" class="counter">00:00</div>
+        <div id="counter2" class="counter">00:00</div>
+        <button id="pauseAll">Pause</button>
+      </div>
+      <div id="popUpID"></div>
+      <div id="captured-white" class="captured-container middle-left"></div>
+      <div id="board"></div>
+      <div id="captured-black" class="captured-container middle-right"></div>
+      <script type="module" src="board.js"></script>
+      <script type="module" src="counter.js"></script>
+      <script type="module" src="finishScreen.js" defer></script>
     </div>
-    <div id="counter">
-      <div id="counter1" class="counter">00:00</div>
-      <div id="counter2" class="counter">00:00</div>
-      <button id="pauseAll">Pause</button>
-    </div>
-    <div id="popUpID"></div>
-    <div id="captured-white" class="captured-container middle-left"></div>
-    <div id="board"></div>
-    <div id="captured-black" class="captured-container middle-right"></div>
-    <script type="module" src="board.js"></script>
-    <script src="counter.js"></script>
-    <script type="module" src="finishScreen.js" defer></script>
-  </div>
-</body>
-
+  </body>
 </html>

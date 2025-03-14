@@ -1,16 +1,4 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-const delay = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-};
+import { getCurrentTurn } from './drag-drop.js';
 const createCounter = (elementId, timeLeft) => {
     const counterElement = document.getElementById(elementId);
     if (!counterElement) {
@@ -41,7 +29,6 @@ const createCounter = (elementId, timeLeft) => {
         }, 1000);
     };
     updateDisplay();
-    startTimer();
     return {
         stop: () => {
             if (timer) {
@@ -66,7 +53,7 @@ function getValue() { }
 let timeLeft = timeLeftInput * 60;
 =======
 let selectedTime = null;
-let timeLeft = 0;
+let timeLeft = 1800;
 document.querySelectorAll('.TimeButtons').forEach((button) => {
     button.addEventListener('click', function () {
         selectedTime = parseInt(this.value, 10);
@@ -84,27 +71,32 @@ let currentTurn = document.getElementById("currentTurn");
 counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
 counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
 let isPaused = false;
-(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield delay(1000);
-    if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "b") {
-        counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
-        counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-    }
-    else if ((currentTurn === null || currentTurn === void 0 ? void 0 : currentTurn.textContent) === "w") {
-        counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-        counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
-    }
-    const pauseButton = document.getElementById("pauseAll");
-    if (pauseButton) {
-        pauseButton.textContent = "Start";
-        pauseButton.addEventListener("click", () => {
-            if (!counter1 || !counter2)
-                return;
-            if (isPaused) {
-                counter1.resume();
-                counter2.stop();
-            }
-            isPaused = !isPaused;
-        });
-    }
-}))();
+const pauseButton = document.getElementById("pauseAll");
+if (pauseButton) {
+    pauseButton.textContent = "Start";
+    pauseButton.addEventListener("click", () => {
+        isPaused = true;
+        if (isPaused) {
+            setInterval(function () {
+                if (getCurrentTurn() === "b") {
+                    counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
+                    counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+                }
+                else if (getCurrentTurn() === "w") {
+                    counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+                    counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+                }
+                else
+                    return;
+            }, 10);
+        }
+    });
+}
+const bullet = document.getElementById("bullet");
+const blitz = document.getElementById("Blitz");
+const normal = document.getElementById("Normal");
+console.log(bullet.value, blitz.value, normal.value);
+function getValue() { }
+// bullet?.addEventListener("click", () => onClick(bullet.value));
+// blitz?.addEventListener("click", () => onClick(blitz.value));
+// normal?.addEventListener("click", () => onClick(normal.value));
