@@ -53,6 +53,7 @@ const createCounter = (elementId, timeLeft) => {
         resume: startTimer,
     };
 };
+<<<<<<< HEAD
 const bullet = document.getElementById("bullet");
 const blitz = document.getElementById("Blitz");
 const normal = document.getElementById("Normal");
@@ -63,6 +64,20 @@ function getValue() { }
 // blitz?.addEventListener("click", () => onClick(blitz.value));
 // normal?.addEventListener("click", () => onClick(normal.value));
 let timeLeft = timeLeftInput * 60;
+=======
+let selectedTime = null;
+let timeLeft = 0;
+document.querySelectorAll('.TimeButtons').forEach((button) => {
+    button.addEventListener('click', function () {
+        selectedTime = parseInt(this.value, 10);
+        console.log(selectedTime);
+        if (selectedTime !== null) {
+            timeLeft = selectedTime * 60;
+            console.log(timeLeft);
+        }
+    });
+});
+>>>>>>> 3563ba94241ecc46bae4b540a496b8122b28c385
 const counter1 = createCounter("counter1", timeLeft);
 const counter2 = createCounter("counter2", timeLeft);
 let currentTurn = document.getElementById("currentTurn");

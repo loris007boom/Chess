@@ -1,6 +1,8 @@
 import { addDragEvents } from "./drag-drop.js";
 import { pieceMap, gamePosition } from "./board.js";
 class Piece {
+    // static blackScore: number = 0;
+    // static whiteScore: number = 0;
     constructor(color, row, col, name) {
         //Creating the img
         const imgLink = `icons/${name}_${color}.png`;
@@ -64,7 +66,26 @@ class Piece {
         this.img.remove();
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
+        // if (this.color === "w") {
+        //     console.log("Schwarzer Score1:", Piece.blackScore);
+        //     console.log("Schwarzer points1:", this.points);
+        //     Piece.blackScore += this.points;
+        //     console.log("Schwarzer Score2:", Piece.blackScore);
+        //     console.log("Schwarzer points2:", this.points);
+        // } else if (this.color === "b") {
+        //     console.log("Weisser Score1:", Piece.whiteScore);
+        //     console.log("Weisser points1:", this.points);
+        //     Piece.whiteScore += this.points;
+        //     console.log("Weisser Score2:", Piece.whiteScore);
+        //     console.log("Weisser points1:", this.points);
+        // }
         const capturedContainer = this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
+        // const scoreCounter =
+        //     this.color === "w" ? document.getElementById("captured-white-score") : document.getElementById("captured-black-score");
+        // if (scoreCounter) {
+        //     console.log('jbhg')
+        //     scoreCounter.textContent = `Score: ${this.color === "w" ? Piece.whiteScore : Piece.blackScore}`;
+        // }
         if (capturedContainer) {
             this.img.style.width = "40px";
             this.img.style.height = "40px";
