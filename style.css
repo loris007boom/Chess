@@ -1,7 +1,6 @@
 body {
   background-color: #312e2b;
 }
-
 #board {
   display: grid;
   grid-template-columns: repeat(8, 50px);
@@ -126,5 +125,4 @@ textarea {
   color: #000;
   width: 60px;
   height: 60px;
-
 }
