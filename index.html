@@ -11,7 +11,7 @@
 <body>
   <h1 class="title">♟️Schach♟️</h1>
   <div class="container">
-    <div>
+    <div id="TimeButtonContainer">
       <button class="TimeButtons" id="bullet" value="3">3 Minuten</button>
 
       <button class="TimeButtons" id="Blitz" value="1">1 Minute</button>
@@ -19,11 +19,9 @@
       <button class="TimeButtons" id="Normal" value="20">20 Minuten</button>
     </div>
     <div id="counter">
+      <div id="counter1" class="counter">00:00</div>
+      <div id="counter2" class="counter">00:00</div>
       <button id="pauseAll">Start</button>
-      <div class="counter-container">
-        <div id="counter1" class="counter">00:00</div>
-        <div id="counter2" class="counter">00:00</div>
-      </div>
     </div>
     <div id="popUpID"></div>
     <div id="captured-white" class="captured-container middle-left"></div>
@@ -31,7 +29,7 @@
     <div id="captured-black" class="captured-container middle-right"></div>
     <script type="module" src="board.js"></script>
     <script type="module" src="counter.js"></script>
-    <script type="module" src="finishScreen.js" defer></script>
+    <!-- <script type="module" src="finishScreen.js" defer></script> -->
   </div>
 </body>
 

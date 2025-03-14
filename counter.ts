@@ -94,11 +94,9 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
       const TimeButtonContainer = document.getElementById('TimeButtonContainer') as HTMLDialogElement;
 
       if (pauseButton) {
-
         pauseButton.addEventListener("click", () => {
           // Entfernt die Buttons
           TimeButtonContainer.remove();
-
           setInterval(function () {
             if (getCurrentTurn() === "b") {
               counter1?.resume();
