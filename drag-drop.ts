@@ -1,4 +1,4 @@
-import { pieceMap } from "./board.js";
+import { gamePosition, pieceMap } from "./board.js";
 
 let currentTurn = "w"; // Weiß beginnt
 
@@ -41,9 +41,11 @@ const addDropEvents = (square: HTMLElement) => {
     const newCol = parseInt(square.dataset.col as string);
 
     //Checking if the move is valid
-
-    if (movingPiece?.isValidMove(newRow, newCol) && movingPiece.isPathFree(newRow, newCol)) 
-    { 
+    if (movingPiece?.isMoveValid(newRow, newCol)) 
+    {
+        //Moving and capturing the piece if there is one
+        const pieceToCapture = gamePosition[newRow][newCol]
+        pieceToCapture?.capture();
         movingPiece?.move(newRow, newCol, square);
 
 

@@ -1,4 +1,4 @@
-import { pieceMap } from "./board.js";
+import { gamePosition, pieceMap } from "./board.js";
 let currentTurn = "w"; // Weiß beginnt
 // Drag & Drop Events
 const addDragEvents = (img) => {
@@ -32,7 +32,10 @@ const addDropEvents = (square) => {
         const newRow = parseInt(square.dataset.row);
         const newCol = parseInt(square.dataset.col);
         //Checking if the move is valid
-        if ((movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isValidMove(newRow, newCol)) && movingPiece.isPathFree(newRow, newCol)) {
+        if (movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isMoveValid(newRow, newCol)) {
+            //Moving and capturing the piece if there is one
+            const pieceToCapture = gamePosition[newRow][newCol];
+            pieceToCapture === null || pieceToCapture === void 0 ? void 0 : pieceToCapture.capture();
             movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.move(newRow, newCol, square);
             // Wechseln des Spielzugs
             currentTurn = currentTurn === "w" ? "b" : "w";

@@ -7,30 +7,31 @@ class Pawn extends Piece {
         this.points = 1;
     }
 
-    isValidMove(newRow: number, newCol: number): boolean {
+    isMoveCorrect(newRow: number, newCol: number): boolean {
         //Checking if the piece is moving in the allowed directions
         //First we check for the color because the pawns move in different directions
         if (this.color === "w") {
             if (
                 (newRow === this.row - 1 && newCol === this.col && !gamePosition[newRow][newCol]) ||
                 //Pawns can move two squares the first move
-                (newRow === this.row - 2 && newCol === this.col && this.row === 6) ||
+                (newRow === this.row - 2 && newCol === this.col && this.row === 6 && !gamePosition[newRow][newCol]) ||
                 //Pawns can capture diagonally
-                (this.row - newRow === 1 && Math.abs(this.col - newCol) === 1 &&
-                    gamePosition[newRow][newCol])
-            ) {
+                (this.row - newRow === 1 && Math.abs(this.col - newCol) === 1 && gamePosition[newRow][newCol])
+            ) 
+            {
                 return true;
             }
         }
+
         else if (this.color === "b") {
             if (
                 (newRow === this.row + 1 && newCol === this.col && !gamePosition[newRow][newCol]) ||
                 //Pawns can move two squares the first move
-                (newRow === this.row + 2 && newCol === this.col && this.row === 1) ||
+                (newRow === this.row + 2 && newCol === this.col && this.row === 1 && !gamePosition[newRow][newCol]) ||
                 //Pawns can capture diagonally
-                (this.row - newRow === -1 && Math.abs(this.col - newCol) === 1 &&
-                    gamePosition[newRow][newCol])
-            ) {
+                (this.row - newRow === -1 && Math.abs(this.col - newCol) === 1 && gamePosition[newRow][newCol])
+            ) 
+            {
                 return true;
             }
         }
@@ -45,9 +46,10 @@ class Rook extends Piece {
         this.points = 5;
     }
 
-    isValidMove(newRow: number, newCol: number): boolean {
+    isMoveCorrect(newRow: number, newCol: number): boolean {
         //Checking if the piece is moving in the allowed directions
-        if (newRow === this.row && newCol !== this.col || newCol === this.col && newRow !== this.row) {
+        if (newRow === this.row && newCol !== this.col || newCol === this.col && newRow !== this.row) 
+        {
             return true;
         }
 
@@ -61,12 +63,13 @@ class Knight extends Piece {
         this.points = 3;
     }
 
-    isValidMove(newRow: number, newCol: number): boolean {
+    isMoveCorrect(newRow: number, newCol: number): boolean {
         //Checking if the piece is moving in the allowed directions
         if (
             Math.abs(newRow - this.row) === 2 && Math.abs(newCol - this.col) === 1 ||
             Math.abs(newRow - this.row) === 1 && Math.abs(newCol - this.col) === 2
-        ) {
+        ) 
+        {
             return true;
         }
 
@@ -74,13 +77,8 @@ class Knight extends Piece {
     }
 
     //The knight can jump over other pieces
-    isPathFree(newRow: number, newCol: number): boolean {
-        const pieceToCapture = gamePosition[newRow][newCol];
-        if (!pieceToCapture || pieceToCapture.canBeCaptured(this)) {
-            pieceToCapture?.capture();
-            return true;
-        }
-        return false;
+    isPathFree(): boolean {
+        return true;
     }
 }
 
@@ -90,9 +88,10 @@ class Bishop extends Piece {
         this.points = 3;
     }
 
-    isValidMove(newRow: number, newCol: number): boolean {
+    isMoveCorrect(newRow: number, newCol: number): boolean {
         //Checking if the piece is moving in the allowed directions
-        if (Math.abs(this.row - newRow) === Math.abs(this.col - newCol)) {
+        if (Math.abs(this.row - newRow) === Math.abs(this.col - newCol)) 
+        {
             return true;
         }
 
@@ -106,12 +105,13 @@ class Queen extends Piece {
         this.points = 9;
     }
 
-    isValidMove(newRow: number, newCol: number): boolean {
+    isMoveCorrect(newRow: number, newCol: number): boolean {
         //Checking if the piece is moving in the allowed directions
         if (
             (newRow === this.row && newCol !== this.col || newCol === this.col && newRow !== this.row) ||
             (Math.abs(this.row - newRow) === Math.abs(this.col - newCol))
-        ) {
+        ) 
+        {
             return true;
         }
 
@@ -124,13 +124,14 @@ class King extends Piece {
         super(color, row, col, "king");
     }
 
-    isValidMove(newRow: number, newCol: number): boolean {
+    isMoveCorrect(newRow: number, newCol: number): boolean {
         //Checking if the piece is moving in the allowed directions
         if (
             (newRow === this.row && Math.abs(newCol - this.col) === 1) ||
             (newCol === this.col && Math.abs(newRow - this.row) === 1) ||
             (Math.abs(this.row - newRow) === 1 && Math.abs(this.col - newCol) === 1)
-        ) {
+        ) 
+        {
             return true;
         }
 
@@ -157,4 +158,4 @@ const createPiece = (piece: string, color: string, row: number, col: number): Pi
     }
 }
 
-export { createPiece };
+export { createPiece, King };

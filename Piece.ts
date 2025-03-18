@@ -1,5 +1,6 @@
 import { addDragEvents } from "./drag-drop.js";
 import { pieceMap, gamePosition } from "./board.js";
+import { King } from "./pieces.js";
 
 
 class Piece {
@@ -46,15 +47,30 @@ class Piece {
         gamePosition[newRow][newCol] = this;
         this.row = newRow;
         this.col = newCol;
+
+        const opposingColor = this.color === "w" ? "w" : "b";
+        Piece.isCheckmate(opposingColor);
     }
 
-    isValidMove(newRow: number, newCol: number): boolean {
+    isMoveValid(newRow: number, newCol: number): boolean {
+        //Checking all together if the move is valid
+        if (
+            this.isMoveCorrect(newRow, newCol) && this.isPathFree(newRow, newCol) && 
+            this.canCapture(newRow, newCol) && !this.isCheck(newRow, newCol) 
+           )
+        {
+            return true;
+        }
+        return false;
+    }
+
+    isMoveCorrect(newRow: number, newCol: number): boolean {
         return false;
     }
 
     isPathFree(newRow: number, newCol: number): boolean {
         //Checking the difference between the rows and columns
-        const numSquares = Math.abs(this.row - newRow === 0 ? this.col - newCol : this.row - newRow);
+        const numSquares = Math.abs(this.row === newRow ? this.col - newCol : this.row - newRow);
         for (let i = 1; i < numSquares; i++) {
             //Checking whether the row and column stay the same, are increased or reduced
             const rowToCheck = this.row === newRow ? this.row : this.row < newRow ? this.row + i : this.row - i;
@@ -64,22 +80,79 @@ class Piece {
                 return false;
             }
         }
+        return true;
+    }
 
-        //Checking if there is a piece to capture on the landing square and if it can be captured
-        const lastRowToCheck = this.row === newRow ? this.row :
-            this.row < newRow ? this.row + numSquares : this.row - numSquares;
-        const lastColToCheck = this.col === newCol ? this.col :
-            this.col < newCol ? this.col + numSquares : this.col - numSquares;
-        const pieceToCapture = gamePosition[lastRowToCheck][lastColToCheck];
-        if (!pieceToCapture || pieceToCapture.canBeCaptured(this)) {
-            pieceToCapture?.capture();
-            return true;
+    isCheck(newRow: number, newCol: number): boolean {
+        //Controlling that if the piece moves its king won't be in check
+
+        //Taking hold of the king
+        const king = this.findKing();
+
+        //Temporary movement of the piece to see what its new position would be
+        const newSquare = gamePosition[newRow][newCol];
+        gamePosition[newRow][newCol] = this;
+        gamePosition[this.row][this.col] = null;
+
+        //Row and column where the king is
+        let kingRow = king.row;
+        let kingCol = king.col;
+        //If the king itself is moving, like this it doesn't take the old coordinates
+        if (king === this)
+        {
+            kingRow = newRow;
+            kingCol = newCol;
         }
+
+        //Iterating through every opposing piece
+        for (const row of gamePosition)
+        {
+            for (const piece of row)
+            {
+                //Checking if any opposing piece can attack the king
+                if (
+                    piece && piece.color !== this.color && piece.isMoveCorrect(kingRow, kingCol) && 
+                    piece.isPathFree(kingRow, kingCol) && piece.canCapture(kingRow, kingCol)
+                   )
+                {
+                    //Setting the board how it was before
+                    gamePosition[newRow][newCol] = newSquare;
+                    gamePosition[this.row][this.col] = this;
+                    return true;
+                }
+            }
+        }
+
+        //Setting the board how it was before
+        gamePosition[newRow][newCol] = newSquare;
+        gamePosition[this.row][this.col] = this;
         return false;
     }
 
-    canBeCaptured(movingPiece: Piece) {
-        if (this.color !== movingPiece.color) {
+    findKing(): King {
+        //Searching for the king
+        for (const row of gamePosition)
+        {
+            for (const piece of row)
+            {
+                if (piece instanceof King && piece.color === this.color)
+                {
+                    if (this === piece)
+                    {
+                        return this;
+                    }
+                    return piece;
+                }
+            }
+        }
+        throw new Error("King not found!!!");
+    }
+
+    canCapture(newRow: number, newCol: number) {
+        const numSquares = Math.abs(this.row === newRow ? this.col - newCol : this.row - newRow);
+        //Checking if there is a piece to capture on the landing square and if it can be captured
+        const pieceToCapture = gamePosition[newRow][newCol];
+        if (!pieceToCapture || this.color !== pieceToCapture.color) {
             return true;
         }
         return false;
@@ -124,6 +197,29 @@ class Piece {
             this.img.style.height = "40px";
             capturedContainer.appendChild(this.img);
         }
+    }
+
+    static isCheckmate(color: string): boolean {
+
+        for (let row = 0; row < gamePosition.length; row++)
+        {
+            for (let col = 0; col < gamePosition[row].length; col++)
+            {
+                if (gamePosition[row][col]?.color === color)
+                {
+                    for (let row = 0; row < gamePosition.length; row++)
+                    {
+                        for (let col = 0; col < gamePosition[row].length; col++)
+                        {
+                            gamePosition[row][col]?.isMoveValid(row, col);
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        console.log("checkmate");
+        return true;
     }
 }
 
