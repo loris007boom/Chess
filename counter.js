@@ -1,16 +1,4 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-const delay = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-};
+import { getCurrentTurn } from './drag-drop.js';
 const createCounter = (elementId, timeLeft) => {
     const counterElement = document.getElementById(elementId);
     if (!counterElement) {
@@ -24,6 +12,26 @@ const createCounter = (elementId, timeLeft) => {
         const seconds = timeLeft % 60;
         counterElement.textContent = `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
     };
+    const showWinnerPopup = () => {
+        let winColor = getCurrentTurn() === "w" ? "Black" : "White";
+        const popUp = document.getElementById("popUpID");
+        if (!popUp) {
+            console.error("Fehler: Das Pop-up-Element wurde nicht gefunden.");
+            return;
+        }
+        popUp.classList.add("popUp");
+        popUp.style.display = "flex";
+        const reStartButton = document.createElement("button");
+        reStartButton.classList.add("reStartButton");
+        reStartButton.textContent = "Restart";
+        const message = document.createElement("p");
+        message.classList.add("message");
+        message.textContent = `${winColor} Player Won! 🎉🏆`;
+        reStartButton.addEventListener("click", () => window.location.reload());
+        popUp.innerHTML = ""; // Verhindert doppeltes Einfügen
+        popUp.appendChild(message);
+        popUp.appendChild(reStartButton);
+    };
     const startTimer = () => {
         if (running)
             return;
@@ -34,54 +42,54 @@ const createCounter = (elementId, timeLeft) => {
                 updateDisplay();
             }
             else {
-                clearInterval(timer);
-                counterElement.textContent = "Zeit abgelaufen!";
-                running = false;
+                showWinnerPopup();
             }
         }, 1000);
     };
+    const stopTimer = () => {
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+            running = false;
+        }
+    };
     updateDisplay();
-    startTimer();
     return {
-        stop: () => {
-            if (timer) {
-                clearInterval(timer);
-                timer = null;
-                running = false;
-            }
-        },
-        resume: startTimer
+        stop: stopTimer,
+        resume: startTimer,
     };
 };
-let timeLeftInput = prompt("Wie viele Minuten wollt ihr spielen?", "") || "20";
-let timeLeft = parseInt(timeLeftInput) * 60;
-if (isNaN(timeLeft) || timeLeft <= 0 || timeLeft >= 30 * 60) {
-    alert("Ungültige Eingabe!");
-}
-else {
-    const counter1 = createCounter("counter1", timeLeft);
-    const counter2 = createCounter("counter2", timeLeft);
-    counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-    counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-    let isPaused = false;
-    (() => __awaiter(void 0, void 0, void 0, function* () {
-        yield delay(1000);
-        const pauseButton = document.getElementById("pauseAll");
-        if (pauseButton) {
-            pauseButton.textContent = "Switch";
-            pauseButton.addEventListener("click", () => {
-                if (!counter1 || !counter2)
-                    return;
-                if (isPaused) {
-                    counter1.resume();
-                    counter2.stop();
-                }
-                else {
-                    counter1.stop();
-                    counter2.resume();
-                }
-                isPaused = !isPaused;
-            });
+let selectedTime = null;
+let timeLeft;
+let counter1 = null;
+let counter2 = null;
+document.querySelectorAll('.TimeButtons').forEach((button) => {
+    button.addEventListener('click', function () {
+        selectedTime = parseInt(this.value, 10);
+        if (selectedTime !== null) {
+            timeLeft = selectedTime * 60;
+            counter1 = createCounter("counter1", timeLeft);
+            counter2 = createCounter("counter2", timeLeft);
+            counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+            counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+            const pauseButton = document.getElementById("pauseAll");
+            const TimeButtonContainer = document.getElementById('TimeButtonContainer');
+            if (pauseButton) {
+                pauseButton.addEventListener("click", () => {
+                    // Entfernt die Buttons
+                    TimeButtonContainer.remove();
+                    setInterval(function () {
+                        if (getCurrentTurn() === "b") {
+                            counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
+                            counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+                        }
+                        else if (getCurrentTurn() === "w") {
+                            counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+                            counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+                        }
+                    }, 1000);
+                });
+            }
         }
-    }))();
-}
+    });
+});

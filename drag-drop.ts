@@ -53,7 +53,15 @@ const addDropEvents = (square: HTMLElement) => {
 
     });
 
-  
+    let dynamicValue = Math.random();  
 }
 
 export { addDragEvents, addDropEvents, currentTurn };
+
+setInterval(() => {
+  currentTurn = currentTurn;
+}, 10);
+
+export function getCurrentTurn() {
+  return currentTurn;
+}
