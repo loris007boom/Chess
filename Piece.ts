@@ -98,15 +98,15 @@ class Piece{
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
 
-    const capturedContainer =
-      this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
+        const capturedContainer =
+        this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
 
-    if (capturedContainer) {
-      this.img.style.width = "40px";
-      this.img.style.height = "40px";
-      capturedContainer.appendChild(this.img);
-
-    }
+        if (capturedContainer) 
+        {
+            this.img.style.width = "40px";
+            this.img.style.height = "40px";
+            capturedContainer.appendChild(this.img);
+        }
   }
 }
 
