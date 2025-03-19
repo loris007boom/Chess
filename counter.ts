@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import { getCurrentTurn } from './drag-drop.js';
 import { showWinnerPopup } from './winningScreen.js';
-=======
-import { currentTurn, getCurrentTurn } from './drag-drop.js';
->>>>>>> 01d5118de7b49f2f2b7b44ddb500b49894b2f172
+
 
 const createCounter = (elementId: string, timeLeft: number) => {
   const counterElement = document.getElementById(elementId);
@@ -57,32 +54,6 @@ const updatePlayerTurn = () => {
   const currentTurn = getCurrentTurn();
   whichPlayerTurnElement.textContent = currentTurn === "w" ? "White's turn" : "Black's turn";
 }
-const showWinnerPopup = () => {
-  let winColor: string = getCurrentTurn() === "w" ? "Black" : "White";
-
-  const popUp = document.getElementById("popUpID") as HTMLDivElement | null;
-  if (!popUp) {
-    console.error("Fehler: Das Pop-up-Element wurde nicht gefunden.");
-    return;
-  }
-
-  popUp.classList.add("popUp");
-  popUp.style.display = "flex";
-
-  const reStartButton = document.createElement("button");
-  reStartButton.classList.add("reStartButton");
-  reStartButton.textContent = "Restart";
-
-  const message = document.createElement("p") as HTMLParagraphElement;
-  message.classList.add("message");
-  message.textContent = `${winColor} Player Won! 🎉🏆`;
-
-  reStartButton.addEventListener("click", () => window.location.reload());
-
-  popUp.innerHTML = ""; // Verhindert doppeltes Einfügen
-  popUp.appendChild(message);
-  popUp.appendChild(reStartButton);
-};
 
 let selectedTime: number | null = null;
 let timeLeft: number;
