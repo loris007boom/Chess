@@ -1,5 +1,3 @@
-import { getCurrentTurn } from "./drag-drop.js";
-
 const showWinnerPopup = (color: string) => {
     const winColor = color === "w" ? "White" : "Black";
 

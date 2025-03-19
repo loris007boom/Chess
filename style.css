@@ -28,7 +28,7 @@ body {
 }
 
 .captured-container {
-  position: fixed;
+  position: relative;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;

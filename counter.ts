@@ -40,8 +40,6 @@ const createCounter = (elementId: string, timeLeft: number) => {
     }
   };
 
-
-
   updateDisplay();
 
   return {
