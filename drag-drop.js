@@ -41,7 +41,6 @@ const addDropEvents = (square) => {
             currentTurn = currentTurn === "w" ? "b" : "w";
         }
     });
-    let dynamicValue = Math.random();
 };
 export { addDragEvents, addDropEvents, currentTurn };
 setInterval(() => {

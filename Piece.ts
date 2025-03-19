@@ -1,6 +1,8 @@
 import { addDragEvents } from "./drag-drop.js";
 import { pieceMap, gamePosition } from "./board.js";
 import { King } from "./pieces.js";
+import { vCheck_On, vCheck_Off } from "./vfx.js";
+import { showWinnerPopup } from "./winningScreen.js";
 
 
 class Piece {
@@ -48,7 +50,8 @@ class Piece {
         this.row = newRow;
         this.col = newCol;
 
-        const opposingColor = this.color === "w" ? "w" : "b";
+        //Checking if it is checkmate
+        const opposingColor = this.color === "w" ? "b" : "w";
         Piece.isCheckmate(opposingColor);
     }
 
@@ -118,6 +121,7 @@ class Piece {
                     //Setting the board how it was before
                     gamePosition[newRow][newCol] = newSquare;
                     gamePosition[this.row][this.col] = this;
+                    vCheck_On(king);
                     return true;
                 }
             }
@@ -126,6 +130,7 @@ class Piece {
         //Setting the board how it was before
         gamePosition[newRow][newCol] = newSquare;
         gamePosition[this.row][this.col] = this;
+        vCheck_Off(king);
         return false;
     }
 
@@ -148,7 +153,7 @@ class Piece {
         throw new Error("King not found!!!");
     }
 
-    canCapture(newRow: number, newCol: number) {
+    canCapture(newRow: number, newCol: number): boolean {
         const numSquares = Math.abs(this.row === newRow ? this.col - newCol : this.row - newRow);
         //Checking if there is a piece to capture on the landing square and if it can be captured
         const pieceToCapture = gamePosition[newRow][newCol];
@@ -201,24 +206,27 @@ class Piece {
 
     static isCheckmate(color: string): boolean {
 
-        for (let row = 0; row < gamePosition.length; row++)
+        for (let pieceRow = 0; pieceRow < gamePosition.length; pieceRow++)
         {
-            for (let col = 0; col < gamePosition[row].length; col++)
+            for (let pieceCol = 0; pieceCol < 8; pieceCol++)
             {
-                if (gamePosition[row][col]?.color === color)
+                if (gamePosition[pieceRow][pieceCol]?.color === color)
                 {
                     for (let row = 0; row < gamePosition.length; row++)
                     {
-                        for (let col = 0; col < gamePosition[row].length; col++)
+                        for (let col = 0; col < 8; col++)
                         {
-                            gamePosition[row][col]?.isMoveValid(row, col);
-                            return false;
+                            if (gamePosition[pieceRow][pieceCol]?.isMoveValid(row, col))
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
             }
         }
-        console.log("checkmate");
+        const winColor = color === "w" ? "b" : "w";
+        showWinnerPopup(winColor);
         return true;
     }
 }

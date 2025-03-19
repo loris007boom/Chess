@@ -1,6 +1,8 @@
 import { addDragEvents } from "./drag-drop.js";
 import { pieceMap, gamePosition } from "./board.js";
 import { King } from "./pieces.js";
+import { vCheck_On, vCheck_Off } from "./vfx.js";
+import { showWinnerPopup } from "./winningScreen.js";
 class Piece {
     // static blackScore: number = 0;
     // static whiteScore: number = 0;
@@ -30,7 +32,8 @@ class Piece {
         gamePosition[newRow][newCol] = this;
         this.row = newRow;
         this.col = newCol;
-        const opposingColor = this.color === "w" ? "w" : "b";
+        //Checking if it is checkmate
+        const opposingColor = this.color === "w" ? "b" : "w";
         Piece.isCheckmate(opposingColor);
     }
     isMoveValid(newRow, newCol) {
@@ -82,6 +85,7 @@ class Piece {
                     //Setting the board how it was before
                     gamePosition[newRow][newCol] = newSquare;
                     gamePosition[this.row][this.col] = this;
+                    vCheck_On(king);
                     return true;
                 }
             }
@@ -89,6 +93,7 @@ class Piece {
         //Setting the board how it was before
         gamePosition[newRow][newCol] = newSquare;
         gamePosition[this.row][this.col] = this;
+        vCheck_Off(king);
         return false;
     }
     findKing() {
@@ -146,19 +151,21 @@ class Piece {
     }
     static isCheckmate(color) {
         var _a, _b;
-        for (let row = 0; row < gamePosition.length; row++) {
-            for (let col = 0; col < gamePosition[row].length; col++) {
-                if (((_a = gamePosition[row][col]) === null || _a === void 0 ? void 0 : _a.color) === color) {
+        for (let pieceRow = 0; pieceRow < gamePosition.length; pieceRow++) {
+            for (let pieceCol = 0; pieceCol < 8; pieceCol++) {
+                if (((_a = gamePosition[pieceRow][pieceCol]) === null || _a === void 0 ? void 0 : _a.color) === color) {
                     for (let row = 0; row < gamePosition.length; row++) {
-                        for (let col = 0; col < gamePosition[row].length; col++) {
-                            (_b = gamePosition[row][col]) === null || _b === void 0 ? void 0 : _b.isMoveValid(row, col);
-                            return false;
+                        for (let col = 0; col < 8; col++) {
+                            if ((_b = gamePosition[pieceRow][pieceCol]) === null || _b === void 0 ? void 0 : _b.isMoveValid(row, col)) {
+                                return false;
+                            }
                         }
                     }
                 }
             }
         }
-        console.log("checkmate");
+        const winColor = color === "w" ? "b" : "w";
+        showWinnerPopup(winColor);
         return true;
     }
 }

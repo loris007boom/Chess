@@ -1,4 +1,5 @@
 import { getCurrentTurn } from './drag-drop.js';
+import { showWinnerPopup } from './winningScreen.js';
 
 const createCounter = (elementId: string, timeLeft: number) => {
   const counterElement = document.getElementById(elementId);
@@ -16,33 +17,6 @@ const createCounter = (elementId: string, timeLeft: number) => {
     counterElement.textContent = `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
   };
 
-  const showWinnerPopup = () => {
-    let winColor: string = getCurrentTurn() === "w" ? "Black" : "White";
-
-    const popUp = document.getElementById("popUpID") as HTMLDivElement | null;
-    if (!popUp) {
-      console.error("Fehler: Das Pop-up-Element wurde nicht gefunden.");
-      return;
-    }
-
-    popUp.classList.add("popUp");
-    popUp.style.display = "flex";
-
-    const reStartButton = document.createElement("button");
-    reStartButton.classList.add("reStartButton");
-    reStartButton.textContent = "Restart";
-
-    const message = document.createElement("p") as HTMLParagraphElement;
-    message.classList.add("message");
-    message.textContent = `${winColor} Player Won! 🎉🏆`;
-
-    reStartButton.addEventListener("click", () => window.location.reload());
-
-    popUp.innerHTML = "";
-    popUp.appendChild(message);
-    popUp.appendChild(reStartButton);
-  };
-
   const startTimer = () => {
     if (running) return;
     running = true;
@@ -51,7 +25,8 @@ const createCounter = (elementId: string, timeLeft: number) => {
         timeLeft--;
         updateDisplay();
       } else {
-        showWinnerPopup();
+        const winColor = getCurrentTurn() === "w" ? "b" : "w";
+        showWinnerPopup(winColor);
       }
     }, 1000);
   };
