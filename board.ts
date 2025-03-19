@@ -64,6 +64,7 @@ const createBoard = () => {
       boardElement.appendChild(square);
     }
   }
+
 };
 
 createBoard();

@@ -41,6 +41,31 @@ const createCounter = (elementId, timeLeft) => {
         resume: startTimer,
     };
 };
+const updatePlayerTurn = () => {
+    const whichPlayerTurnElement = document.getElementById('whichPlayerTurn');
+    const currentTurn = getCurrentTurn();
+    whichPlayerTurnElement.textContent = currentTurn === "w" ? "White's turn" : "Black's turn";
+};
+const showWinnerPopup = () => {
+    let winColor = getCurrentTurn() === "w" ? "Black" : "White";
+    const popUp = document.getElementById("popUpID");
+    if (!popUp) {
+        console.error("Fehler: Das Pop-up-Element wurde nicht gefunden.");
+        return;
+    }
+    popUp.classList.add("popUp");
+    popUp.style.display = "flex";
+    const reStartButton = document.createElement("button");
+    reStartButton.classList.add("reStartButton");
+    reStartButton.textContent = "Restart";
+    const message = document.createElement("p");
+    message.classList.add("message");
+    message.textContent = `${winColor} Player Won! 🎉🏆`;
+    reStartButton.addEventListener("click", () => window.location.reload());
+    popUp.innerHTML = ""; // Verhindert doppeltes Einfügen
+    popUp.appendChild(message);
+    popUp.appendChild(reStartButton);
+};
 let selectedTime = null;
 let timeLeft;
 let counter1 = null;
@@ -68,9 +93,12 @@ document.querySelectorAll('.TimeButtons').forEach((button) => {
                             counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
                             counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
                         }
+                        updatePlayerTurn();
                     }, 1000);
                 });
             }
+            updatePlayerTurn();
         }
     });
 });
+export { showWinnerPopup };
