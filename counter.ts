@@ -38,7 +38,7 @@ const createCounter = (elementId: string, timeLeft: number) => {
 
     reStartButton.addEventListener("click", () => window.location.reload());
 
-    popUp.innerHTML = ""; // Verhindert doppeltes Einfügen
+    popUp.innerHTML = "";
     popUp.appendChild(message);
     popUp.appendChild(reStartButton);
   };
@@ -95,7 +95,7 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
 
       if (pauseButton) {
         pauseButton.addEventListener("click", () => {
-          // Entfernt die Buttons
+
           TimeButtonContainer.remove();
           setInterval(function () {
             if (getCurrentTurn() === "b") {
