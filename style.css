@@ -23,6 +23,9 @@ body {
   position: relative;
 }
 
+.checkSquare {
+  color: red;
+}
 .captured-container {
   position: fixed;
   display: flex;

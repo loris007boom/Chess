@@ -101,7 +101,7 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
 
       if (pauseButton) {
         pauseButton.addEventListener("click", () => {
-          // Entfernt die Buttons
+
           TimeButtonContainer.remove();
           setInterval(function () {
             if (getCurrentTurn() === "b") {
