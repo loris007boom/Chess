@@ -1,4 +1,4 @@
-import { getCurrentTurn } from './drag-drop.js';
+import { currentTurn, getCurrentTurn } from './drag-drop.js';
 
 const createCounter = (elementId: string, timeLeft: number) => {
   const counterElement = document.getElementById(elementId);
@@ -14,33 +14,6 @@ const createCounter = (elementId: string, timeLeft: number) => {
     const minutes: number = Math.floor(timeLeft / 60);
     const seconds: number = timeLeft % 60;
     counterElement.textContent = `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
-  };
-
-  const showWinnerPopup = () => {
-    let winColor: string = getCurrentTurn() === "w" ? "Black" : "White";
-
-    const popUp = document.getElementById("popUpID") as HTMLDivElement | null;
-    if (!popUp) {
-      console.error("Fehler: Das Pop-up-Element wurde nicht gefunden.");
-      return;
-    }
-
-    popUp.classList.add("popUp");
-    popUp.style.display = "flex";
-
-    const reStartButton = document.createElement("button");
-    reStartButton.classList.add("reStartButton");
-    reStartButton.textContent = "Restart";
-
-    const message = document.createElement("p") as HTMLParagraphElement;
-    message.classList.add("message");
-    message.textContent = `${winColor} Player Won! 🎉🏆`;
-
-    reStartButton.addEventListener("click", () => window.location.reload());
-
-    popUp.innerHTML = ""; // Verhindert doppeltes Einfügen
-    popUp.appendChild(message);
-    popUp.appendChild(reStartButton);
   };
 
   const startTimer = () => {
@@ -64,12 +37,45 @@ const createCounter = (elementId: string, timeLeft: number) => {
     }
   };
 
+
+
   updateDisplay();
 
   return {
     stop: stopTimer,
     resume: startTimer,
   };
+};
+const updatePlayerTurn = () => {
+  const whichPlayerTurnElement = document.getElementById('whichPlayerTurn') as HTMLParagraphElement;
+  const currentTurn = getCurrentTurn();
+  whichPlayerTurnElement.textContent = currentTurn === "w" ? "White's turn" : "Black's turn";
+}
+const showWinnerPopup = () => {
+  let winColor: string = getCurrentTurn() === "w" ? "Black" : "White";
+
+  const popUp = document.getElementById("popUpID") as HTMLDivElement | null;
+  if (!popUp) {
+    console.error("Fehler: Das Pop-up-Element wurde nicht gefunden.");
+    return;
+  }
+
+  popUp.classList.add("popUp");
+  popUp.style.display = "flex";
+
+  const reStartButton = document.createElement("button");
+  reStartButton.classList.add("reStartButton");
+  reStartButton.textContent = "Restart";
+
+  const message = document.createElement("p") as HTMLParagraphElement;
+  message.classList.add("message");
+  message.textContent = `${winColor} Player Won! 🎉🏆`;
+
+  reStartButton.addEventListener("click", () => window.location.reload());
+
+  popUp.innerHTML = ""; // Verhindert doppeltes Einfügen
+  popUp.appendChild(message);
+  popUp.appendChild(reStartButton);
 };
 
 let selectedTime: number | null = null;
@@ -105,9 +111,12 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
               counter1?.stop();
               counter2?.resume();
             }
+            updatePlayerTurn();
           }, 1000);
         });
       }
+      updatePlayerTurn();
     }
   });
 });
+export { showWinnerPopup }

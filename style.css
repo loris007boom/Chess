@@ -24,10 +24,10 @@ body {
 }
 
 .captured-container {
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap-reverse;
+  flex-wrap: wrap;
   gap: 2px;
   width: 200px;
   height: 200px;
@@ -36,15 +36,14 @@ body {
 
 .middle-left {
   display: flex;
-  justify-content: center;
-  top: 150px;
-  left: 200px;
+  top: 320px;
+  left: 400px;
 }
 
 .middle-right {
   display: flex;
-  top: 600px;
-  right: 200px;
+  bottom: 100px;
+  right: 400px;
 
 }
 
@@ -215,4 +214,12 @@ textarea {
   background: linear-gradient(135deg, #218838, #28a745);
   transform: scale(1.1);
   box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+#whichPlayerTurn {
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 2em;
+  font-family: 'Arial', sans-serif;
 }

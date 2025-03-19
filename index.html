@@ -10,13 +10,17 @@
 
 <body>
   <h1 class="title">♟️Schach♟️</h1>
+  <p id="whichPlayerTurn"></p>
   <div class="container">
     <div id="TimeButtonContainer">
-      <button class="TimeButtons" id="bullet" value="3">Bullet</button>
-
       <button class="TimeButtons" id="Blitz" value="1">Blitz</button>
 
+      <button class="TimeButtons" id="bullet" value="3">Bullet</button>
+
+      <button class="TimeButtons" id="Schnellschach" value="10">Schnellschach</button>
+
       <button class="TimeButtons" id="Normal" value="20">Normal</button>
+
     </div>
     <div id="counter">
       <div id="counter1" class="counter">00:00</div>
@@ -29,7 +33,6 @@
     <div id="captured-black" class="captured-container middle-right"></div>
     <script type="module" src="board.js"></script>
     <script type="module" src="counter.js"></script>
-    <!-- <script type="module" src="finishScreen.js" defer></script> -->
   </div>
 </body>
 

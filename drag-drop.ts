@@ -41,21 +41,20 @@ const addDropEvents = (square: HTMLElement) => {
     const newCol = parseInt(square.dataset.col as string);
 
     //Checking if the move is valid
-    if (movingPiece?.isMoveValid(newRow, newCol)) 
-    {
-        //Moving and capturing the piece if there is one
-        const pieceToCapture = gamePosition[newRow][newCol]
-        pieceToCapture?.capture();
-        movingPiece?.move(newRow, newCol, square);
+    if (movingPiece?.isMoveValid(newRow, newCol)) {
+      //Moving and capturing the piece if there is one
+      const pieceToCapture = gamePosition[newRow][newCol]
+      pieceToCapture?.capture();
+      movingPiece?.move(newRow, newCol, square);
 
 
-        // Wechseln des Spielzugs
-        currentTurn = currentTurn === "w" ? "b" : "w";
+      // Wechseln des Spielzugs
+      currentTurn = currentTurn === "w" ? "b" : "w";
     }
 
-    });
+  });
 
-    let dynamicValue = Math.random();  
+  let dynamicValue = Math.random();
 }
 
 export { addDragEvents, addDropEvents, currentTurn };
