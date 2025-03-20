@@ -18,4 +18,6 @@ const showWinnerPopup = (color) => {
     popUp.appendChild(message);
     popUp.appendChild(reStartButton);
 };
+const surrenderButton = () => {
+};
 export { showWinnerPopup };

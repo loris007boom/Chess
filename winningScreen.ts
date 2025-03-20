@@ -25,6 +25,5 @@ const showWinnerPopup = (color: string) => {
     popUp.innerHTML = "";
     popUp.appendChild(message);
     popUp.appendChild(reStartButton);
-};
-  
+}; 
 export {showWinnerPopup};

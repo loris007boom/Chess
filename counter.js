@@ -28,6 +28,13 @@ const createCounter = (elementId, timeLeft) => {
             }
         }, 1000);
     };
+    const surrenderButton = document.getElementById("surrenderButton");
+    if (surrenderButton) {
+        surrenderButton.addEventListener("click", () => {
+            const winColor = getCurrentTurn() === "w" ? "b" : "w";
+            showWinnerPopup(winColor);
+        });
+    }
     const stopTimer = () => {
         if (timer) {
             clearInterval(timer);
