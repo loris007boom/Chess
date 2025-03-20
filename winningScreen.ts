@@ -9,7 +9,7 @@ const showWinnerPopup = (color: string) => {
   
     popUp.classList.add("popUp");
     popUp.style.display = "flex";
-  
+
     const reStartButton = document.createElement("button");
     reStartButton.classList.add("reStartButton");
     reStartButton.textContent = "Restart";

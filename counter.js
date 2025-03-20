@@ -1,6 +1,8 @@
 import { getCurrentTurn } from './drag-drop.js';
 import { showWinnerPopup } from './winningScreen.js';
 import { createBoard } from './board.js';
+import { Piece } from './Piece.js';
+let intervalID;
 const createCounter = (elementId, timeLeft) => {
     const counterElement = document.getElementById(elementId);
     if (!counterElement) {
@@ -29,13 +31,6 @@ const createCounter = (elementId, timeLeft) => {
             }
         }, 1000);
     };
-    const surrenderButton = document.getElementById("surrenderButton");
-    if (surrenderButton) {
-        surrenderButton.addEventListener("click", () => {
-            const winColor = getCurrentTurn() === "w" ? "b" : "w";
-            showWinnerPopup(winColor);
-        });
-    }
     const stopTimer = () => {
         if (timer) {
             clearInterval(timer);
@@ -48,11 +43,6 @@ const createCounter = (elementId, timeLeft) => {
         stop: stopTimer,
         resume: startTimer,
     };
-};
-const updatePlayerTurn = () => {
-    const whichPlayerTurnElement = document.getElementById('whichPlayerTurn');
-    const currentTurn = getCurrentTurn();
-    whichPlayerTurnElement.textContent = currentTurn === "w" ? "White's turn" : "Black's turn";
 };
 let selectedTime = null;
 let timeLeft;
@@ -72,13 +62,29 @@ document.querySelectorAll('.TimeButtons').forEach((button) => {
 });
 const pauseButton = document.getElementById("pauseAll");
 const TimeButtonContainer = document.getElementById('TimeButtonContainer');
+const surrenderButton = document.getElementById("surrenderButton");
+let hasGameEnded = false;
 if (pauseButton) {
     pauseButton.addEventListener("click", () => {
-        //Creating the board when the game starts
         createBoard();
-        TimeButtonContainer.remove();
-        setInterval(function () {
-            if (getCurrentTurn() === "b") {
+        const winColor = getCurrentTurn() === "w" ? "b" : "w";
+        intervalID = setInterval(function () {
+            if (surrenderButton) {
+                surrenderButton.addEventListener("click", () => {
+                    showWinnerPopup(winColor);
+                    hasGameEnded = true;
+                });
+            }
+            if (Piece.isCheckmate(winColor)) {
+                hasGameEnded = true;
+            }
+            if (hasGameEnded) {
+                clearInterval(intervalID);
+                counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+                counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+                return;
+            }
+            else if (getCurrentTurn() === "b") {
                 counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
                 counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
             }
@@ -86,7 +92,7 @@ if (pauseButton) {
                 counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
                 counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
             }
-            updatePlayerTurn();
+            TimeButtonContainer === null || TimeButtonContainer === void 0 ? void 0 : TimeButtonContainer.remove();
         }, 1000);
     });
 }
