@@ -74,8 +74,8 @@ class Piece {
         const king = this.findKing();
         //Temporary movement of the piece to see what its new position would be
         const newSquare = gamePosition[newRow][newCol];
-        gamePosition[newRow][newCol] = this;
         gamePosition[this.row][this.col] = null;
+        gamePosition[newRow][newCol] = this;
         //Row and column where the king is
         let kingRow = king.row;
         let kingCol = king.col;

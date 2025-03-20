@@ -132,7 +132,8 @@ class King extends Piece {
             (newRow === this.row && Math.abs(newCol - this.col) === 1) ||
             (newCol === this.col && Math.abs(newRow - this.row) === 1) ||
             (Math.abs(this.row - newRow) === 1 && Math.abs(this.col - newCol) === 1) ||
-            (this.canCastle(newRow, newCol))
+            //Checking if the king can castle
+            (this.canCastle(newRow, newCol) && !this.isCheck(this.row, this.col))
         ) 
         {
             return true;
@@ -147,15 +148,52 @@ class King extends Piece {
         {
             //Searching the coordinates of the rook and its new coordinates
             let rook;
+            //Short castle
             if (newCol > this.col)
             {
                 rook = gamePosition[this.row][7];
+                //Checking that towards the path of the king no square is in check
+                for (let row of gamePosition)
+                {
+                    for (let piece of row)
+                    {
+                        if (
+                            piece && piece.color !== this.color && piece.isMoveCorrect(this.row, this.col + 1) && 
+                            piece.isPathFree(this.row, this.col + 1) && piece.canCapture(this.row, this.col + 1)
+                           )
+                        {
+                            return false;
+                        }
+                    }
+                }
             }
+            //Long castle
             else
             {
                 rook = gamePosition[this.row][0];
+                //For the long castle we need to check that the square on the second column is empty
+                if (gamePosition[this.row][1])
+                {
+                    return false;
+                }
+
+                //Checking that towards the path of the king no square is in check
+                for (let row of gamePosition)
+                {
+                    for (let piece of row)
+                    {
+                        if (
+                            piece && piece.color !== this.color && piece.isMoveCorrect(this.row, this.col - 1) && 
+                            piece.isPathFree(this.row, this.col - 1) && piece.canCapture(this.row, this.col - 1)
+                           )
+                        {
+                            return false;
+                        }
+                    }
+                }
             }
-            
+
+            //Checking if it's a rook and hasn't moved yet
             if (rook instanceof Rook && !this.hasMoved)
             {
                 return true;
@@ -164,8 +202,8 @@ class King extends Piece {
         return false;
     }
 
-    castle(newCol: number): void
-    {
+    castle(newCol: number): void {
+        //Taking hold of the rook to move and its new coordinates
         let rook;
         let newRookCol;
         if (newCol > this.col)
@@ -178,7 +216,8 @@ class King extends Piece {
             rook = gamePosition[this.row][0];
             newRookCol = this.col - 1;
         }
-            
+        
+        //Finding the new square and moving the rook
         const newSquare = document.getElementById(`${this.row}${newRookCol}`) as HTMLElement;
         rook?.move(this.row, newRookCol, newSquare);
     }

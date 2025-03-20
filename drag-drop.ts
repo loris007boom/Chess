@@ -47,11 +47,12 @@ const addDropEvents = (square: HTMLElement) => {
       const pieceToCapture = gamePosition[newRow][newCol]
       pieceToCapture?.capture();
 
+      //Castling if it is a castle
       if (movingPiece instanceof King && movingPiece.canCastle(newRow, newCol))
       {
         movingPiece.castle(newCol);
       }
-      
+
       movingPiece?.move(newRow, newCol, square);
 
 
