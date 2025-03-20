@@ -31,6 +31,15 @@ const createCounter = (elementId: string, timeLeft: number) => {
       }
     }, 1000);
   };
+  
+  const surrenderButton = document.getElementById("surrenderButton") as HTMLButtonElement;
+
+if (surrenderButton) {
+  surrenderButton.addEventListener("click", () => {
+    const winColor = getCurrentTurn() === "w" ? "b" : "w";
+    showWinnerPopup(winColor);
+  });
+}
 
   const stopTimer = () => {
     if (timer) {
