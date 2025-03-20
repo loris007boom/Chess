@@ -77,7 +77,6 @@ document.querySelectorAll('.TimeButtons').forEach((button) => {
                     }, 1000);
                 });
             }
-            updatePlayerTurn();
         }
     });
 });

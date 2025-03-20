@@ -47,6 +47,7 @@ const createCounter = (elementId: string, timeLeft: number) => {
     resume: startTimer,
   };
 };
+
 const updatePlayerTurn = () => {
   const whichPlayerTurnElement = document.getElementById('whichPlayerTurn') as HTMLParagraphElement;
   const currentTurn = getCurrentTurn();
@@ -86,11 +87,11 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
               counter1?.stop();
               counter2?.resume();
             }
-            updatePlayerTurn();
+              updatePlayerTurn();
           }, 1000);
         });
       }
-      updatePlayerTurn();
+      
     }
   });
 });

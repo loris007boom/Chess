@@ -41,9 +41,12 @@ class Pawn extends Piece {
 }
 
 class Rook extends Piece {
+    hasMoved: boolean;
+
     constructor(color: string, row: number, col: number) {
         super(color, row, col, "rook");
         this.points = 5;
+        this.hasMoved = false;
     }
 
     isMoveCorrect(newRow: number, newCol: number): boolean {
@@ -120,6 +123,7 @@ class Queen extends Piece {
 }
 
 class King extends Piece {
+
     constructor(color: string, row: number, col: number) {
         super(color, row, col, "king");
     }
