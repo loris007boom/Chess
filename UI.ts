@@ -5,6 +5,8 @@ import {Piece}  from './Piece.js'
 
 let intervalID: number;
 
+
+
 const createCounter = (elementId: string, timeLeft: number) => {
   const counterElement = document.getElementById(elementId);
   if (!counterElement) {
@@ -58,6 +60,7 @@ let counter2: ReturnType<typeof createCounter> | null = null;
 
 document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) => {
   button.addEventListener('click', function () {
+    pauseButton.style.display = "block";
     selectedTime = parseInt(this.value, 10);
 
     if (selectedTime !== null) {
@@ -72,7 +75,7 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
   });
 });
 
-const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
+      const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
       const TimeButtonContainer = document.getElementById('TimeButtonContainer') as HTMLDialogElement;
       const surrenderButton = document.getElementById("surrenderButton") as HTMLButtonElement;
       let hasGameEnded : boolean = false;
@@ -80,6 +83,9 @@ const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
       if (pauseButton) {
         pauseButton.addEventListener("click", () => {
           createBoard();
+          surrenderButton.style.display = "block";
+          pauseButton.style.display = "none";
+          TimeButtonContainer.style.display = "none";
           const winColor = getCurrentTurn() === "w" ? "b" : "w";
             intervalID = setInterval(function () {
                 if (surrenderButton) {
@@ -105,7 +111,6 @@ const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
                     counter1?.stop();
                     counter2?.resume();
                 }
-                TimeButtonContainer?.remove();
-            }, 1000);
+            }, 1);
         });
     }
