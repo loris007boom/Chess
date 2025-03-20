@@ -21,6 +21,7 @@ class Piece {
         this.row = row;
         this.col = col;
         this.points = 0;
+        this.hasMoved = false;
         //Saving in the map the img id with its object for future references
         pieceMap.set(img.id, this);
     }
@@ -32,9 +33,16 @@ class Piece {
         gamePosition[newRow][newCol] = this;
         this.row = newRow;
         this.col = newCol;
+        if (!this.hasMoved) {
+            this.hasMoved = true;
+        }
         //Checking if it is checkmate
         const opposingColor = this.color === "w" ? "b" : "w";
-        Piece.isCheckmate(opposingColor);
+        if (Piece.isCheckmate(opposingColor)) {
+            //If no moves would block the checkmate, show winning screen
+            const winColor = this.color;
+            showWinnerPopup(winColor);
+        }
     }
     isMoveValid(newRow, newCol) {
         //Checking all together if the move is valid
@@ -71,8 +79,8 @@ class Piece {
         //Row and column where the king is
         let kingRow = king.row;
         let kingCol = king.col;
-        //If the king itself is moving, like this it doesn't take the old coordinates
-        if (king === this) {
+        //Like this, if the king itself is moving it doesn't take the old coordinates
+        if (this instanceof King && this.color === king.color) {
             kingRow = newRow;
             kingCol = newCol;
         }
@@ -101,7 +109,7 @@ class Piece {
         for (const row of gamePosition) {
             for (const piece of row) {
                 if (piece instanceof King && piece.color === this.color) {
-                    if (this === piece) {
+                    if (this instanceof King && piece.color === this.color) {
                         return this;
                     }
                     return piece;
@@ -111,7 +119,6 @@ class Piece {
         throw new Error("King not found!!!");
     }
     canCapture(newRow, newCol) {
-        const numSquares = Math.abs(this.row === newRow ? this.col - newCol : this.row - newRow);
         //Checking if there is a piece to capture on the landing square and if it can be captured
         const pieceToCapture = gamePosition[newRow][newCol];
         if (!pieceToCapture || this.color !== pieceToCapture.color) {
@@ -151,11 +158,15 @@ class Piece {
     }
     static isCheckmate(color) {
         var _a, _b;
+        //Iterating through each piece
         for (let pieceRow = 0; pieceRow < gamePosition.length; pieceRow++) {
             for (let pieceCol = 0; pieceCol < 8; pieceCol++) {
+                //Checking only opponent's pieces
                 if (((_a = gamePosition[pieceRow][pieceCol]) === null || _a === void 0 ? void 0 : _a.color) === color) {
+                    //Iterating through every square 
                     for (let row = 0; row < gamePosition.length; row++) {
                         for (let col = 0; col < 8; col++) {
+                            //Checking if there is a move with a piece that would block the checkmate
                             if ((_b = gamePosition[pieceRow][pieceCol]) === null || _b === void 0 ? void 0 : _b.isMoveValid(row, col)) {
                                 return false;
                             }
@@ -164,8 +175,6 @@ class Piece {
                 }
             }
         }
-        const winColor = color === "w" ? "b" : "w";
-        showWinnerPopup(winColor);
         return true;
     }
 }

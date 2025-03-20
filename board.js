@@ -26,7 +26,7 @@ const createBoard = () => {
             square.classList.add("square");
             square.dataset.row = `${row}`;
             square.dataset.col = `${col}`;
-            square.id = letterLabels[col] + (8 - row).toString();
+            square.id = `${row}${col}`;
             addDropEvents(square);
             // Adding colors to the squares
             square.classList.add((row + col) % 2 === 0 ? "white" : "green");
@@ -54,5 +54,4 @@ const createBoard = () => {
         }
     }
 };
-createBoard();
 export { pieceMap, gamePosition, createBoard };

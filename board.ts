@@ -32,7 +32,7 @@ const createBoard = () => {
       square.classList.add("square");
       square.dataset.row = `${row}`;
       square.dataset.col = `${col}`;
-      square.id = letterLabels[col] + (8 - row).toString();
+      square.id = `${row}${col}`;
 
       addDropEvents(square);
 
@@ -66,7 +66,5 @@ const createBoard = () => {
   }
 
 };
-
-createBoard();
 
 export { pieceMap, gamePosition, createBoard };

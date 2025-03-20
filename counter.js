@@ -1,5 +1,6 @@
 import { getCurrentTurn } from './drag-drop.js';
 import { showWinnerPopup } from './winningScreen.js';
+import { createBoard } from './board.js';
 const createCounter = (elementId, timeLeft) => {
     const counterElement = document.getElementById(elementId);
     if (!counterElement) {
@@ -66,25 +67,26 @@ document.querySelectorAll('.TimeButtons').forEach((button) => {
             counter2 = createCounter("counter2", timeLeft);
             counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
             counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-            const pauseButton = document.getElementById("pauseAll");
-            const TimeButtonContainer = document.getElementById('TimeButtonContainer');
-            if (pauseButton) {
-                pauseButton.addEventListener("click", () => {
-                    TimeButtonContainer.remove();
-                    setInterval(function () {
-                        if (getCurrentTurn() === "b") {
-                            counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
-                            counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-                        }
-                        else if (getCurrentTurn() === "w") {
-                            counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-                            counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
-                        }
-                        updatePlayerTurn();
-                    }, 1000);
-                });
-            }
         }
     });
 });
-export { showWinnerPopup };
+const pauseButton = document.getElementById("pauseAll");
+const TimeButtonContainer = document.getElementById('TimeButtonContainer');
+if (pauseButton) {
+    pauseButton.addEventListener("click", () => {
+        //Creating the board when the game starts
+        createBoard();
+        TimeButtonContainer.remove();
+        setInterval(function () {
+            if (getCurrentTurn() === "b") {
+                counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
+                counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+            }
+            else if (getCurrentTurn() === "w") {
+                counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+                counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+            }
+            updatePlayerTurn();
+        }, 1000);
+    });
+}

@@ -1,5 +1,6 @@
 import { getCurrentTurn } from './drag-drop.js';
 import { showWinnerPopup } from './winningScreen.js';
+import { createBoard } from './board.js';
 
 
 const createCounter = (elementId: string, timeLeft: number) => {
@@ -81,12 +82,20 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
       counter1?.stop();
       counter2?.stop();
 
-      const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
+      
+      
+    }
+  });
+});
+
+const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
       const TimeButtonContainer = document.getElementById('TimeButtonContainer') as HTMLDialogElement;
 
       if (pauseButton) {
         pauseButton.addEventListener("click", () => {
 
+          //Creating the board when the game starts
+          createBoard();
           TimeButtonContainer.remove();
           setInterval(function () {
             if (getCurrentTurn() === "b") {
@@ -100,8 +109,3 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
           }, 1000);
         });
       }
-      
-    }
-  });
-});
-export { showWinnerPopup }

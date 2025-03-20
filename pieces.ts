@@ -41,12 +41,10 @@ class Pawn extends Piece {
 }
 
 class Rook extends Piece {
-    hasMoved: boolean;
 
     constructor(color: string, row: number, col: number) {
         super(color, row, col, "rook");
         this.points = 5;
-        this.hasMoved = false;
     }
 
     isMoveCorrect(newRow: number, newCol: number): boolean {
@@ -133,13 +131,56 @@ class King extends Piece {
         if (
             (newRow === this.row && Math.abs(newCol - this.col) === 1) ||
             (newCol === this.col && Math.abs(newRow - this.row) === 1) ||
-            (Math.abs(this.row - newRow) === 1 && Math.abs(this.col - newCol) === 1)
+            (Math.abs(this.row - newRow) === 1 && Math.abs(this.col - newCol) === 1) ||
+            (this.canCastle(newRow, newCol))
         ) 
         {
             return true;
         }
 
         return false;
+    }
+
+    canCastle(newRow: number, newCol: number): boolean {
+        //Checking if move is valid and the king never moved
+        if (newRow === this.row && Math.abs(newCol - this.col) === 2 && !this.hasMoved)
+        {
+            //Searching the coordinates of the rook and its new coordinates
+            let rook;
+            if (newCol > this.col)
+            {
+                rook = gamePosition[this.row][7];
+            }
+            else
+            {
+                rook = gamePosition[this.row][0];
+            }
+            
+            if (rook instanceof Rook && !this.hasMoved)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    castle(newCol: number): void
+    {
+        let rook;
+        let newRookCol;
+        if (newCol > this.col)
+        {
+            rook = gamePosition[this.row][7];
+            newRookCol = this.col + 1;
+        }
+        else
+        {
+            rook = gamePosition[this.row][0];
+            newRookCol = this.col - 1;
+        }
+            
+        const newSquare = document.getElementById(`${this.row}${newRookCol}`) as HTMLElement;
+        rook?.move(this.row, newRookCol, newSquare);
     }
 }
 
