@@ -1,5 +1,7 @@
 import { getCurrentTurn } from './drag-drop.js';
 import { showWinnerPopup } from './winningScreen.js';
+import { createBoard } from './board.js';
+import { Piece } from './Piece.js';
 let intervalID;
 const createCounter = (elementId, timeLeft) => {
     const counterElement = document.getElementById(elementId);
@@ -55,33 +57,42 @@ document.querySelectorAll('.TimeButtons').forEach((button) => {
             counter2 = createCounter("counter2", timeLeft);
             counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
             counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-            const pauseButton = document.getElementById("pauseAll");
-            const TimeButtonContainer = document.getElementById('TimeButtonContainer');
-            const surrenderButton = document.getElementById("surrenderButton");
-            if (pauseButton) {
-                pauseButton.addEventListener("click", () => {
-                    intervalID = setInterval(function () {
-                        if (surrenderButton) {
-                            surrenderButton.addEventListener("click", () => {
-                                const winColor = getCurrentTurn() === "w" ? "b" : "w";
-                                showWinnerPopup(winColor);
-                                counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-                                counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-                            });
-                        }
-                        if (getCurrentTurn() === "b") {
-                            counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
-                            counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
-                        }
-                        else if (getCurrentTurn() === "w") {
-                            counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
-                            counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
-                        }
-                        TimeButtonContainer === null || TimeButtonContainer === void 0 ? void 0 : TimeButtonContainer.remove();
-                    }, 1000);
-                });
-            }
         }
     });
 });
-export { intervalID };
+const pauseButton = document.getElementById("pauseAll");
+const TimeButtonContainer = document.getElementById('TimeButtonContainer');
+const surrenderButton = document.getElementById("surrenderButton");
+let hasGameEnded = false;
+if (pauseButton) {
+    pauseButton.addEventListener("click", () => {
+        createBoard();
+        const winColor = getCurrentTurn() === "w" ? "b" : "w";
+        intervalID = setInterval(function () {
+            if (surrenderButton) {
+                surrenderButton.addEventListener("click", () => {
+                    showWinnerPopup(winColor);
+                    hasGameEnded = true;
+                });
+            }
+            if (Piece.isCheckmate(winColor)) {
+                hasGameEnded = true;
+            }
+            if (hasGameEnded) {
+                clearInterval(intervalID);
+                counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+                counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+                return;
+            }
+            else if (getCurrentTurn() === "b") {
+                counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
+                counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+            }
+            else if (getCurrentTurn() === "w") {
+                counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
+                counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+            }
+            TimeButtonContainer === null || TimeButtonContainer === void 0 ? void 0 : TimeButtonContainer.remove();
+        }, 1000);
+    });
+}

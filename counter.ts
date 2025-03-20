@@ -1,5 +1,7 @@
 import { getCurrentTurn } from './drag-drop.js';
 import { showWinnerPopup } from './winningScreen.js';
+import { createBoard } from './board.js';
+import {Piece}  from './Piece.js'
 
 let intervalID: number;
 
@@ -66,39 +68,44 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
 
       counter1?.stop();
       counter2?.stop();
+    }
+  });
+});
 
-      const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
+const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
       const TimeButtonContainer = document.getElementById('TimeButtonContainer') as HTMLDialogElement;
       const surrenderButton = document.getElementById("surrenderButton") as HTMLButtonElement;
+      let hasGameEnded : boolean = false;
 
       if (pauseButton) {
         pauseButton.addEventListener("click", () => {
+          createBoard();
+          const winColor = getCurrentTurn() === "w" ? "b" : "w";
             intervalID = setInterval(function () {
                 if (surrenderButton) {
                     surrenderButton.addEventListener("click", () => {
-                        const winColor = getCurrentTurn() === "w" ? "b" : "w";
                         showWinnerPopup(winColor);
-                        
-                        counter1?.stop();
-                        counter2?.stop();
+                        hasGameEnded = true;
                     });
                 } 
-    
-                if (getCurrentTurn() === "b") {
+                if (Piece.isCheckmate(winColor))
+                  {
+                      hasGameEnded = true;
+                  }
+                  
+                if (hasGameEnded){
+                       clearInterval(intervalID);
+                      counter1?.stop();
+                      counter2?.stop();
+                      return;
+                } else if (getCurrentTurn() === "b") {
                     counter1?.resume();
                     counter2?.stop();
                 } else if (getCurrentTurn() === "w") {
                     counter1?.stop();
                     counter2?.resume();
                 }
-    
                 TimeButtonContainer?.remove();
             }, 1000);
         });
     }
-    
-    }
-  });
-});
-
-export {intervalID};

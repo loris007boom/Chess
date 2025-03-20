@@ -1,4 +1,5 @@
 import { gamePosition, pieceMap } from "./board.js";
+import { King } from "./pieces.js";
 
 let currentTurn = "w"; // Weiß beginnt
 
@@ -45,6 +46,12 @@ const addDropEvents = (square: HTMLElement) => {
       //Moving and capturing the piece if there is one
       const pieceToCapture = gamePosition[newRow][newCol]
       pieceToCapture?.capture();
+
+      if (movingPiece instanceof King && movingPiece.canCastle(newRow, newCol))
+      {
+        movingPiece.castle(newCol);
+      }
+      
       movingPiece?.move(newRow, newCol, square);
 
 

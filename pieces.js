@@ -33,7 +33,6 @@ class Rook extends Piece {
     constructor(color, row, col) {
         super(color, row, col, "rook");
         this.points = 5;
-        this.hasMoved = false;
     }
     isMoveCorrect(newRow, newCol) {
         //Checking if the piece is moving in the allowed directions
@@ -96,10 +95,42 @@ class King extends Piece {
         //Checking if the piece is moving in the allowed directions
         if ((newRow === this.row && Math.abs(newCol - this.col) === 1) ||
             (newCol === this.col && Math.abs(newRow - this.row) === 1) ||
-            (Math.abs(this.row - newRow) === 1 && Math.abs(this.col - newCol) === 1)) {
+            (Math.abs(this.row - newRow) === 1 && Math.abs(this.col - newCol) === 1) ||
+            (this.canCastle(newRow, newCol))) {
             return true;
         }
         return false;
+    }
+    canCastle(newRow, newCol) {
+        //Checking if move is valid and the king never moved
+        if (newRow === this.row && Math.abs(newCol - this.col) === 2 && !this.hasMoved) {
+            //Searching the coordinates of the rook and its new coordinates
+            let rook;
+            if (newCol > this.col) {
+                rook = gamePosition[this.row][7];
+            }
+            else {
+                rook = gamePosition[this.row][0];
+            }
+            if (rook instanceof Rook && !this.hasMoved) {
+                return true;
+            }
+        }
+        return false;
+    }
+    castle(newCol) {
+        let rook;
+        let newRookCol;
+        if (newCol > this.col) {
+            rook = gamePosition[this.row][7];
+            newRookCol = this.col + 1;
+        }
+        else {
+            rook = gamePosition[this.row][0];
+            newRookCol = this.col - 1;
+        }
+        const newSquare = document.getElementById(`${this.row}${newRookCol}`);
+        rook === null || rook === void 0 ? void 0 : rook.move(this.row, newRookCol, newSquare);
     }
 }
 const createPiece = (piece, color, row, col) => {
