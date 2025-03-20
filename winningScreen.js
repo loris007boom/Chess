@@ -1,3 +1,4 @@
+import { intervalID } from "./counter.js";
 const showWinnerPopup = (color) => {
     const winColor = color === "w" ? "White" : "Black";
     const popUp = document.getElementById("popUpID");
@@ -17,7 +18,6 @@ const showWinnerPopup = (color) => {
     popUp.innerHTML = "";
     popUp.appendChild(message);
     popUp.appendChild(reStartButton);
-};
-const surrenderButton = () => {
+    clearInterval(intervalID);
 };
 export { showWinnerPopup };

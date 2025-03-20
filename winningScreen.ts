@@ -1,3 +1,5 @@
+import { intervalID } from "./counter.js";
+
 const showWinnerPopup = (color: string) => {
     const winColor = color === "w" ? "White" : "Black";
 
@@ -23,6 +25,8 @@ const showWinnerPopup = (color: string) => {
     popUp.innerHTML = "";
     popUp.appendChild(message);
     popUp.appendChild(reStartButton);
+
+    clearInterval(intervalID);
 }; 
 
 export {showWinnerPopup};

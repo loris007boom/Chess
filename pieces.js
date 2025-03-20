@@ -33,6 +33,7 @@ class Rook extends Piece {
     constructor(color, row, col) {
         super(color, row, col, "rook");
         this.points = 5;
+        this.hasMoved = false;
     }
     isMoveCorrect(newRow, newCol) {
         //Checking if the piece is moving in the allowed directions

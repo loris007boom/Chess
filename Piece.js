@@ -151,11 +151,15 @@ class Piece {
     }
     static isCheckmate(color) {
         var _a, _b;
+        //Iterating through each piece
         for (let pieceRow = 0; pieceRow < gamePosition.length; pieceRow++) {
             for (let pieceCol = 0; pieceCol < 8; pieceCol++) {
+                //Checking only opponent's pieces
                 if (((_a = gamePosition[pieceRow][pieceCol]) === null || _a === void 0 ? void 0 : _a.color) === color) {
+                    //Iterating through every square 
                     for (let row = 0; row < gamePosition.length; row++) {
                         for (let col = 0; col < 8; col++) {
+                            //Checking if there is a move with a piece that would block the checkmate
                             if ((_b = gamePosition[pieceRow][pieceCol]) === null || _b === void 0 ? void 0 : _b.isMoveValid(row, col)) {
                                 return false;
                             }
@@ -164,6 +168,7 @@ class Piece {
                 }
             }
         }
+        //If no moves would block the checkmate, show winning screen
         const winColor = color === "w" ? "b" : "w";
         showWinnerPopup(winColor);
         return true;

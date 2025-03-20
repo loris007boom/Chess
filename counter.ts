@@ -1,6 +1,7 @@
 import { getCurrentTurn } from './drag-drop.js';
 import { showWinnerPopup } from './winningScreen.js';
 
+let intervalID: number;
 
 const createCounter = (elementId: string, timeLeft: number) => {
   const counterElement = document.getElementById(elementId);
@@ -32,15 +33,6 @@ const createCounter = (elementId: string, timeLeft: number) => {
     }, 1000);
   };
   
-  const surrenderButton = document.getElementById("surrenderButton") as HTMLButtonElement;
-
-if (surrenderButton) {
-  surrenderButton.addEventListener("click", () => {
-    const winColor = getCurrentTurn() === "w" ? "b" : "w";
-    showWinnerPopup(winColor);
-  });
-}
-
   const stopTimer = () => {
     if (timer) {
       clearInterval(timer);
@@ -56,12 +48,6 @@ if (surrenderButton) {
     resume: startTimer,
   };
 };
-
-const updatePlayerTurn = () => {
-  const whichPlayerTurnElement = document.getElementById('whichPlayerTurn') as HTMLParagraphElement;
-  const currentTurn = getCurrentTurn();
-  whichPlayerTurnElement.textContent = currentTurn === "w" ? "White's turn" : "Black's turn";
-}
 
 let selectedTime: number | null = null;
 let timeLeft: number;
@@ -83,25 +69,36 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
 
       const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
       const TimeButtonContainer = document.getElementById('TimeButtonContainer') as HTMLDialogElement;
+      const surrenderButton = document.getElementById("surrenderButton") as HTMLButtonElement;
 
       if (pauseButton) {
         pauseButton.addEventListener("click", () => {
-
-          TimeButtonContainer.remove();
-          setInterval(function () {
-            if (getCurrentTurn() === "b") {
-              counter1?.resume();
-              counter2?.stop();
-            } else if (getCurrentTurn() === "w") {
-              counter1?.stop();
-              counter2?.resume();
-            }
-              updatePlayerTurn();
-          }, 1000);
+            intervalID = setInterval(function () {
+                if (surrenderButton) {
+                    surrenderButton.addEventListener("click", () => {
+                        const winColor = getCurrentTurn() === "w" ? "b" : "w";
+                        showWinnerPopup(winColor);
+                        
+                        counter1?.stop();
+                        counter2?.stop();
+                    });
+                } 
+    
+                if (getCurrentTurn() === "b") {
+                    counter1?.resume();
+                    counter2?.stop();
+                } else if (getCurrentTurn() === "w") {
+                    counter1?.stop();
+                    counter2?.resume();
+                }
+    
+                TimeButtonContainer?.remove();
+            }, 1000);
         });
-      }
-      
+    }
+    
     }
   });
 });
-export { showWinnerPopup }
+
+export {intervalID};
