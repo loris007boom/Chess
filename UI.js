@@ -48,6 +48,11 @@ let selectedTime = null;
 let timeLeft;
 let counter1 = null;
 let counter2 = null;
+const playerTurn = () => {
+    const whichPlayerTurn = document.getElementById("whichPlayerTurn");
+    const color = getCurrentTurn() === "w" ? "White's Turn" : "Black's Turn";
+    whichPlayerTurn.textContent = color;
+};
 document.querySelectorAll('.TimeButtons').forEach((button) => {
     button.addEventListener('click', function () {
         pauseButton.style.display = "block";
@@ -65,18 +70,19 @@ const pauseButton = document.getElementById("pauseAll");
 const TimeButtonContainer = document.getElementById('TimeButtonContainer');
 const surrenderButton = document.getElementById("surrenderButton");
 let hasGameEnded = false;
+let winColor = getCurrentTurn();
 if (pauseButton) {
     pauseButton.addEventListener("click", () => {
         createBoard();
         surrenderButton.style.display = "block";
         pauseButton.style.display = "none";
         TimeButtonContainer.style.display = "none";
-        const winColor = getCurrentTurn() === "w" ? "b" : "w";
         intervalID = setInterval(function () {
+            playerTurn();
             if (surrenderButton) {
                 surrenderButton.addEventListener("click", () => {
-                    showWinnerPopup(winColor);
                     hasGameEnded = true;
+                    showWinnerPopup(winColor);
                 });
             }
             if (Piece.isCheckmate(winColor)) {
@@ -91,10 +97,12 @@ if (pauseButton) {
             else if (getCurrentTurn() === "b") {
                 counter1 === null || counter1 === void 0 ? void 0 : counter1.resume();
                 counter2 === null || counter2 === void 0 ? void 0 : counter2.stop();
+                winColor = "w";
             }
             else if (getCurrentTurn() === "w") {
                 counter1 === null || counter1 === void 0 ? void 0 : counter1.stop();
                 counter2 === null || counter2 === void 0 ? void 0 : counter2.resume();
+                winColor = "b";
             }
         }, 1);
     });

@@ -206,6 +206,7 @@ textarea {
 
 #surrenderButton {
   display: none;
+  order: -1;
   padding: 6px 24px;
   font-size: 1.5em;
   font-weight: bold;
