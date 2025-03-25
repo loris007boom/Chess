@@ -32,8 +32,8 @@ class Pawn extends Piece {
         if (this.row === 0 || this.row === 7) {
             const square = this.img.parentElement;
             this.img.remove();
-            pieceMap.delete(this.img.id);
             const promotedPiece = createPiece("queen", `${this.color}`, this.row, this.col);
+            pieceMap.set(this.img.id, promotedPiece);
             gamePosition[this.row][this.col] = promotedPiece;
             square === null || square === void 0 ? void 0 : square.appendChild(promotedPiece.img);
         }

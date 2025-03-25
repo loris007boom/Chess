@@ -44,6 +44,8 @@ const createBoard = () => {
       const newPiece = createPiece(startPosition[row][col], color, row, col);
       gamePosition[row][col] = newPiece;
       if (newPiece) {
+        //Saving in the map the img id with its object for future references
+        pieceMap.set(newPiece.img.id, newPiece);
         square.appendChild(newPiece.img);
       }
 

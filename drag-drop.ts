@@ -42,7 +42,6 @@ const addDropEvents = (square: HTMLElement) => {
     const newCol = parseInt(square.dataset.col as string);
 
     //Checking if the move is valid
-    console.log(movingPiece?.isMoveValid(newRow, newCol));
     if (movingPiece?.isMoveValid(newRow, newCol)) {
       //Moving and capturing the piece if there is one
       const pieceToCapture = gamePosition[newRow][newCol];

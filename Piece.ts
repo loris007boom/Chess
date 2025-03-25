@@ -21,7 +21,7 @@ class Piece {
         const imgLink = `icons/${name}_${color}.png`;
         const img = document.createElement("img");
         img.src = imgLink;
-        img.alt = name;
+        img.alt = `${name}-${color}`;
         img.className = "piece";
         img.id = `${row}-${col}`;
         img.draggable = true;
@@ -29,16 +29,11 @@ class Piece {
 
         this.img = img;
 
-
         this.color = color;
         this.row = row;
         this.col = col;
         this.points = 0;
         this.hasMoved = false;
-
-
-        //Saving in the map the img id with its object for future references
-        pieceMap.set(img.id, this);
     }
 
     move(newRow: number, newCol: number, newSquare: HTMLElement): void {

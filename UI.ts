@@ -56,8 +56,16 @@ let timeLeft: number;
 let counter1: ReturnType<typeof createCounter> | null = null;
 let counter2: ReturnType<typeof createCounter> | null = null;
 
+const playerTurn = () => {
+  const whichPlayerTurn = document.getElementById("whichPlayerTurn") as HTMLElement;
+  const color = getCurrentTurn() === "w" ? "White's Turn" : "Black's Turn";
+
+  whichPlayerTurn.textContent = color;
+}
+
 document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) => {
   button.addEventListener('click', function () {
+    pauseButton.style.display = "block";
     selectedTime = parseInt(this.value, 10);
 
     if (selectedTime !== null) {
@@ -72,21 +80,26 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
   });
 });
 
-const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
+      const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
       const TimeButtonContainer = document.getElementById('TimeButtonContainer') as HTMLDialogElement;
       const surrenderButton = document.getElementById("surrenderButton") as HTMLButtonElement;
-      let hasGameEnded: boolean = false;
+      let hasGameEnded : boolean = false;
+      let winColor : string = getCurrentTurn();
 
       if (pauseButton) {
         pauseButton.addEventListener("click", () => {
           createBoard();
-          const winColor = getCurrentTurn() === "w" ? "b" : "w";
+          surrenderButton.style.display = "block";
+          pauseButton.style.display = "none";
+          TimeButtonContainer.style.display = "none";
             intervalID = setInterval(function () {
+              playerTurn();
                 if (surrenderButton) {
                     surrenderButton.addEventListener("click", () => {
-                        showWinnerPopup(winColor);
-                        hasGameEnded = true;
+                      hasGameEnded = true;
+                      showWinnerPopup(winColor);
                     });
+
                 } 
                 if (Piece.isCheckmate(winColor))
                   {
@@ -101,11 +114,12 @@ const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
                 } else if (getCurrentTurn() === "b") {
                     counter1?.resume();
                     counter2?.stop();
+                    winColor = "w";
                 } else if (getCurrentTurn() === "w") {
                     counter1?.stop();
                     counter2?.resume();
+                    winColor = "b"
                 }
-                TimeButtonContainer?.remove();
-            }, 1000);
+            }, 1);
         });
     }

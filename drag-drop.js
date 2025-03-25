@@ -33,7 +33,6 @@ const addDropEvents = (square) => {
         const newRow = parseInt(square.dataset.row);
         const newCol = parseInt(square.dataset.col);
         //Checking if the move is valid
-        console.log(movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isMoveValid(newRow, newCol));
         if (movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isMoveValid(newRow, newCol)) {
             //Moving and capturing the piece if there is one
             const pieceToCapture = gamePosition[newRow][newCol];
