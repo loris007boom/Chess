@@ -1,4 +1,4 @@
-import { gamePosition } from "./board.js";
+import { gamePosition, pieceMap } from "./board.js";
 import { Piece } from "./Piece.js";
 
 class Pawn extends Piece {
@@ -37,6 +37,18 @@ class Pawn extends Piece {
         }
 
         return false;
+    }
+
+    pawnPromotion() {
+        if (this.row === 0 || this.row === 7)
+        {
+            const square = this.img.parentElement;
+            this.img.remove();
+            pieceMap.delete(this.img.id);
+            const promotedPiece = createPiece("queen", `${this.color}`, this.row, this.col) as Queen;
+            gamePosition[this.row][this.col] = promotedPiece;
+            square?.appendChild(promotedPiece.img);
+        }
     }
 }
 
@@ -134,7 +146,7 @@ class King extends Piece {
             (Math.abs(this.row - newRow) === 1 && Math.abs(this.col - newCol) === 1) ||
             //Checking if the king can castle
             (this.canCastle(newRow, newCol) && !this.isCheck(this.row, this.col))
-        ) 
+           ) 
         {
             return true;
         }
@@ -242,4 +254,4 @@ const createPiece = (piece: string, color: string, row: number, col: number): Pi
     }
 }
 
-export { createPiece, King };
+export { createPiece, King, Pawn };

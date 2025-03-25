@@ -75,7 +75,7 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
 const pauseButton = document.getElementById("pauseAll") as HTMLButtonElement;
       const TimeButtonContainer = document.getElementById('TimeButtonContainer') as HTMLDialogElement;
       const surrenderButton = document.getElementById("surrenderButton") as HTMLButtonElement;
-      let hasGameEnded : boolean = false;
+      let hasGameEnded: boolean = false;
 
       if (pauseButton) {
         pauseButton.addEventListener("click", () => {

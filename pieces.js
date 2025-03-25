@@ -1,4 +1,4 @@
-import { gamePosition } from "./board.js";
+import { gamePosition, pieceMap } from "./board.js";
 import { Piece } from "./Piece.js";
 class Pawn extends Piece {
     constructor(color, row, col) {
@@ -27,6 +27,16 @@ class Pawn extends Piece {
             }
         }
         return false;
+    }
+    pawnPromotion() {
+        if (this.row === 0 || this.row === 7) {
+            const square = this.img.parentElement;
+            this.img.remove();
+            pieceMap.delete(this.img.id);
+            const promotedPiece = createPiece("queen", `${this.color}`, this.row, this.col);
+            gamePosition[this.row][this.col] = promotedPiece;
+            square === null || square === void 0 ? void 0 : square.appendChild(promotedPiece.img);
+        }
     }
 }
 class Rook extends Piece {
@@ -179,4 +189,4 @@ const createPiece = (piece, color, row, col) => {
             return null;
     }
 };
-export { createPiece, King };
+export { createPiece, King, Pawn };

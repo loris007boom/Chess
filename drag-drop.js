@@ -1,5 +1,5 @@
 import { gamePosition, pieceMap } from "./board.js";
-import { King } from "./pieces.js";
+import { King, Pawn } from "./pieces.js";
 let currentTurn = "w"; // Weiß beginnt
 // Drag & Drop Events
 const addDragEvents = (img) => {
@@ -33,6 +33,7 @@ const addDropEvents = (square) => {
         const newRow = parseInt(square.dataset.row);
         const newCol = parseInt(square.dataset.col);
         //Checking if the move is valid
+        console.log(movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isMoveValid(newRow, newCol));
         if (movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isMoveValid(newRow, newCol)) {
             //Moving and capturing the piece if there is one
             const pieceToCapture = gamePosition[newRow][newCol];
@@ -42,6 +43,10 @@ const addDropEvents = (square) => {
                 movingPiece.castle(newCol);
             }
             movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.move(newRow, newCol, square);
+            //Promoting pawns
+            if (movingPiece instanceof Pawn) {
+                movingPiece.pawnPromotion();
+            }
             // Wechseln des Spielzugs
             currentTurn = currentTurn === "w" ? "b" : "w";
         }

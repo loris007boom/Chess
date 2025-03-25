@@ -1,5 +1,5 @@
 import { gamePosition, pieceMap } from "./board.js";
-import { King } from "./pieces.js";
+import { King, Pawn } from "./pieces.js";
 
 let currentTurn = "w"; // Weiß beginnt
 
@@ -42,9 +42,10 @@ const addDropEvents = (square: HTMLElement) => {
     const newCol = parseInt(square.dataset.col as string);
 
     //Checking if the move is valid
+    console.log(movingPiece?.isMoveValid(newRow, newCol));
     if (movingPiece?.isMoveValid(newRow, newCol)) {
       //Moving and capturing the piece if there is one
-      const pieceToCapture = gamePosition[newRow][newCol]
+      const pieceToCapture = gamePosition[newRow][newCol];
       pieceToCapture?.capture();
 
       //Castling if it is a castle
@@ -55,12 +56,17 @@ const addDropEvents = (square: HTMLElement) => {
 
       movingPiece?.move(newRow, newCol, square);
 
+      //Promoting pawns
+      if (movingPiece instanceof Pawn)
+      {
+        movingPiece.pawnPromotion();
+      }
+
 
       // Wechseln des Spielzugs
       currentTurn = currentTurn === "w" ? "b" : "w";
     }
-
-
+    
     });
 }
 
