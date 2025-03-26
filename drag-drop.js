@@ -1,5 +1,6 @@
-import { gamePosition, pieceMap } from "./board.js";
+import { gamePosition, pieceMap, moves } from "./board.js";
 import { King, Pawn } from "./pieces.js";
+import { Move } from "./Move.js";
 let currentTurn = "w"; // Weiß beginnt
 // Drag & Drop Events
 const addDragEvents = (img) => {
@@ -35,8 +36,22 @@ const addDropEvents = (square) => {
         //Checking if the move is valid
         if (movingPiece === null || movingPiece === void 0 ? void 0 : movingPiece.isMoveValid(newRow, newCol)) {
             //Moving and capturing the piece if there is one
-            const pieceToCapture = gamePosition[newRow][newCol];
+            let pieceToCapture = gamePosition[newRow][newCol];
+            /*Checking if the move is an en passant and changing the piece to capture
+              (only move where the capture is not on the landing square) */
+            if (movingPiece instanceof Pawn && movingPiece.canEnPassant(newRow, newCol)) {
+                if (newRow === 2) {
+                    pieceToCapture = gamePosition[newRow + 1][newCol];
+                }
+                else if (newRow === 5) {
+                    pieceToCapture = gamePosition[newRow - 1][newCol];
+                }
+            }
             pieceToCapture === null || pieceToCapture === void 0 ? void 0 : pieceToCapture.capture();
+            //Collecting the move instance
+            const hasCaptured = pieceToCapture ? true : false;
+            const move = new Move(movingPiece, movingPiece.row, movingPiece.col, newRow, newCol, hasCaptured);
+            moves.push(move);
             //Castling if it is a castle
             if (movingPiece instanceof King && movingPiece.canCastle(newRow, newCol)) {
                 movingPiece.castle(newCol);

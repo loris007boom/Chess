@@ -1,9 +1,9 @@
-import { gamePosition, pieceMap } from "./board.js";
+import { gamePosition, pieceMap, moves } from "./board.js";
 import { Piece } from "./Piece.js";
 
 class Pawn extends Piece {
-    constructor(color: string, row: number, col: number) {
-        super(color, row, col, "pawn");
+    constructor(color: string, row: number, col: number, id: string) {
+        super(color, row, col, "pawn", id);
         this.points = 1;
     }
 
@@ -16,7 +16,9 @@ class Pawn extends Piece {
                 //Pawns can move two squares the first move
                 (newRow === this.row - 2 && newCol === this.col && this.row === 6 && !gamePosition[newRow][newCol]) ||
                 //Pawns can capture diagonally
-                (this.row - newRow === 1 && Math.abs(this.col - newCol) === 1 && gamePosition[newRow][newCol])
+                (this.row - newRow === 1 && Math.abs(this.col - newCol) === 1 && gamePosition[newRow][newCol]) ||
+                //En passant
+                (this.canEnPassant(newRow, newCol))
             ) 
             {
                 return true;
@@ -40,22 +42,57 @@ class Pawn extends Piece {
     }
 
     pawnPromotion() {
+        //Checking if the pawn is on the last row
         if (this.row === 0 || this.row === 7)
         {
+            //Removing the pawn
             const square = this.img.parentElement;
             this.img.remove();
-            const promotedPiece = createPiece("queen", `${this.color}`, this.row, this.col) as Queen;
-            pieceMap.set(this.img.id, promotedPiece)
+
+            //Creating the new piece
+            const promotedPiece = createPiece("queen", `${this.color}`, this.row, this.col, this.img.id) as Queen;
+            pieceMap.set(this.img.id, promotedPiece);
             gamePosition[this.row][this.col] = promotedPiece;
             square?.appendChild(promotedPiece.img);
         }
+    }
+
+    canEnPassant(newRow: number, newCol: number): boolean {
+        if (moves.length === 0) {return false;}
+        //Checking if the en passant is valid
+        const lastMove = moves[moves.length - 1];
+        if (
+            lastMove.piece instanceof Pawn && Math.abs(lastMove.oldRow - lastMove.newRow) === 2 && 
+            Math.abs(this.col - lastMove.newCol) === 1 && lastMove.newRow === this.row
+           )
+        {
+            //Taking hold of square's coordinates where the pawn could move
+            let passantSquareRow = 2
+            let passantSquareCol = lastMove.newCol - 1;
+            if (lastMove.newRow === 4)
+            {
+                passantSquareRow = 5;
+                passantSquareCol = lastMove.newCol + 1;
+            }
+
+            //Checking that the landing square is empty and the coordinates are right
+            if (!gamePosition[passantSquareRow][passantSquareCol])
+            {
+                if (passantSquareRow === newRow && passantSquareCol === newCol)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
 
 class Rook extends Piece {
 
-    constructor(color: string, row: number, col: number) {
-        super(color, row, col, "rook");
+    constructor(color: string, row: number, col: number, id: string) {
+        super(color, row, col, "rook", id);
         this.points = 5;
     }
 
@@ -71,8 +108,8 @@ class Rook extends Piece {
 }
 
 class Knight extends Piece {
-    constructor(color: string, row: number, col: number) {
-        super(color, row, col, "knight");
+    constructor(color: string, row: number, col: number, id: string) {
+        super(color, row, col, "knight", id);
         this.points = 3;
     }
 
@@ -96,8 +133,8 @@ class Knight extends Piece {
 }
 
 class Bishop extends Piece {
-    constructor(color: string, row: number, col: number) {
-        super(color, row, col, "bishop");
+    constructor(color: string, row: number, col: number, id: string) {
+        super(color, row, col, "bishop", id);
         this.points = 3;
     }
 
@@ -113,8 +150,8 @@ class Bishop extends Piece {
 }
 
 class Queen extends Piece {
-    constructor(color: string, row: number, col: number) {
-        super(color, row, col, "queen");
+    constructor(color: string, row: number, col: number, id: string) {
+        super(color, row, col, "queen", id);
         this.points = 9;
     }
 
@@ -134,8 +171,8 @@ class Queen extends Piece {
 
 class King extends Piece {
 
-    constructor(color: string, row: number, col: number) {
-        super(color, row, col, "king");
+    constructor(color: string, row: number, col: number, id: string) {
+        super(color, row, col, "king", id);
     }
 
     isMoveCorrect(newRow: number, newCol: number): boolean {
@@ -235,20 +272,20 @@ class King extends Piece {
     }
 }
 
-const createPiece = (piece: string, color: string, row: number, col: number): Piece | null => {
+const createPiece = (piece: string, color: string, row: number, col: number, id: string): Piece | null => {
     switch (piece) {
         case "pawn":
-            return new Pawn(color, row, col);
+            return new Pawn(color, row, col, id);
         case "rook":
-            return new Rook(color, row, col);
+            return new Rook(color, row, col, id);
         case "knight":
-            return new Knight(color, row, col);
+            return new Knight(color, row, col, id);
         case "bishop":
-            return new Bishop(color, row, col);
+            return new Bishop(color, row, col, id);
         case "queen":
-            return new Queen(color, row, col);
+            return new Queen(color, row, col, id);
         case "king":
-            return new King(color, row, col);
+            return new King(color, row, col, id);
         default:
             return null;
     }

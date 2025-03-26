@@ -1,9 +1,12 @@
 import { createPiece } from "./pieces.js";
 import { Piece } from "./Piece.js";
 import { addDropEvents } from "./drag-drop.js";
+import { Move } from "./Move.js";
 
 // Map Object to store a connection between the images and their objects
 const pieceMap = new Map<string, Piece>();
+
+const moves: Move[] = [];
 
 // Current board state
 let gamePosition: (Piece | null)[][] = [
@@ -41,7 +44,7 @@ const createBoard = () => {
 
       // Creating the pieces
       const color = row < 2 ? "b" : "w";
-      const newPiece = createPiece(startPosition[row][col], color, row, col);
+      const newPiece = createPiece(startPosition[row][col], color, row, col, `${row}-${col}`);
       gamePosition[row][col] = newPiece;
       if (newPiece) {
         //Saving in the map the img id with its object for future references
@@ -69,4 +72,4 @@ const createBoard = () => {
 
 };
 
-export { pieceMap, gamePosition, createBoard };
+export { pieceMap, gamePosition, createBoard, moves };

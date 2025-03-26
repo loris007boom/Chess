@@ -3,17 +3,18 @@ import { pieceMap, gamePosition } from "./board.js";
 import { King } from "./pieces.js";
 import { vCheck_On, vCheck_Off } from "./vfx.js";
 import { showWinnerPopup } from "./winningScreen.js";
+import { gameOver } from "./UI.js";
 class Piece {
     // static blackScore: number = 0;
     // static whiteScore: number = 0;
-    constructor(color, row, col, name) {
+    constructor(color, row, col, name, id) {
         //Creating the img
         const imgLink = `icons/${name}_${color}.png`;
         const img = document.createElement("img");
         img.src = imgLink;
         img.alt = `${name}-${color}`;
         img.className = "piece";
-        img.id = `${row}-${col}`;
+        img.id = id;
         img.draggable = true;
         addDragEvents(img);
         this.img = img;
@@ -37,6 +38,7 @@ class Piece {
         //Checking if it is checkmate
         const opposingColor = this.color === "w" ? "b" : "w";
         if (Piece.isCheckmate(opposingColor)) {
+            gameOver();
             //If no moves would block the checkmate, show winning screen
             const winColor = this.color;
             showWinnerPopup(winColor);

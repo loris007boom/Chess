@@ -34,7 +34,7 @@ const createCounter = (elementId: string, timeLeft: number) => {
       }
     }, 1000);
   };
-  
+
   const stopTimer = () => {
     if (timer) {
       clearInterval(timer);
@@ -86,6 +86,14 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
       let hasGameEnded : boolean = false;
       let winColor : string = getCurrentTurn();
 
+      if (surrenderButton) {
+        surrenderButton.addEventListener("click", () => {
+          hasGameEnded = true;
+          showWinnerPopup(winColor);
+        });
+
+      } 
+
       if (pauseButton) {
         pauseButton.addEventListener("click", () => {
           createBoard();
@@ -94,18 +102,8 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
           TimeButtonContainer.style.display = "none";
             intervalID = setInterval(function () {
               playerTurn();
-                if (surrenderButton) {
-                    surrenderButton.addEventListener("click", () => {
-                      hasGameEnded = true;
-                      showWinnerPopup(winColor);
-                    });
+                
 
-                } 
-                if (Piece.isCheckmate(winColor))
-                  {
-                      hasGameEnded = true;
-                  }
-                  
                 if (hasGameEnded){
                        clearInterval(intervalID);
                       counter1?.stop();
@@ -120,6 +118,10 @@ document.querySelectorAll<HTMLButtonElement>('.TimeButtons').forEach((button) =>
                     counter2?.resume();
                     winColor = "b"
                 }
-            }, 1);
+            }, 200);
         });
     }
+
+export function gameOver()  {
+  hasGameEnded = true;
+};
