@@ -1,6 +1,6 @@
 import { addDragEvents } from './drag-drop.js';
 import { pieceMap, gamePosition } from './board.js';
-import { King } from './pieces.js';
+import { King, Queen, Rook, Pawn } from './pieces.js';
 import { vCheck_On, vCheck_Off } from './vfx.js';
 import { showWinnerPopup } from './winningScreen.js';
 import { gameOver } from './UI.js';
@@ -52,14 +52,31 @@ class Piece {
             this.hasMoved = true;
         }
 
-        //Checking if it is checkmate
+        //Checking if it is checkmate or a draw
         const opposingColor = this.color === "w" ? "b" : "w";
+
         if (Piece.isCheckmate(opposingColor))
         {
             gameOver();
-            //If no moves would block the checkmate, show winning screen
-            const winColor = this.color;
-            showWinnerPopup(winColor);
+            //It's a draw
+            if (!this.isCheck(newRow, newCol, opposingColor))
+            {
+                showWinnerPopup();
+            }
+            //It's checkmate
+            else
+            {
+                //If no moves would block the checkmate, show winning screen
+                const winColor = this.color;
+                showWinnerPopup(winColor);
+            }
+        }
+
+        //Checking if the position is a draw
+        if (Piece.isPositionDraw())
+        {
+            gameOver();
+            showWinnerPopup();
         }
     }
 
@@ -67,7 +84,7 @@ class Piece {
         //Checking all together if the move is valid
         if (
             this.isMoveCorrect(newRow, newCol) && this.isPathFree(newRow, newCol) && 
-            this.canCapture(newRow, newCol) && !this.isCheck(newRow, newCol) 
+            this.canCapture(newRow, newCol) && !this.isCheck(newRow, newCol, this.color) 
            )
         {
             return true;
@@ -94,11 +111,11 @@ class Piece {
         return true;
     }
 
-    isCheck(newRow: number, newCol: number): boolean {
+    isCheck(newRow: number, newCol: number, color: string): boolean {
         //Controlling that if the piece moves its king won't be in check
 
         //Taking hold of the king
-        const king = this.findKing();
+        const king = this.findKing(color);
 
         //Temporary movement of the piece to see what its new position would be
         const newSquare = gamePosition[newRow][newCol];
@@ -122,7 +139,7 @@ class Piece {
             {
                 //Checking if any opposing piece can attack the king
                 if (
-                    piece && piece.color !== this.color && piece.isMoveCorrect(kingRow, kingCol) && 
+                    piece && piece.color !== king.color && piece.isMoveCorrect(kingRow, kingCol) && 
                     piece.isPathFree(kingRow, kingCol) && piece.canCapture(kingRow, kingCol)
                    )
                 {
@@ -142,15 +159,15 @@ class Piece {
         return false;
     }
 
-    findKing(): King {
+    findKing(color: string): King {
         //Searching for the king
         for (const row of gamePosition)
         {
             for (const piece of row)
             {
-                if (piece instanceof King && piece.color === this.color)
+                if (piece instanceof King && piece.color === color)
                 {
-                    if (this instanceof King && piece.color === this.color)
+                    if (this instanceof King && piece.color === color)
                     {
                         return this;
                     }
@@ -170,38 +187,13 @@ class Piece {
         return false;
     }
 
-    capture() {
-
+    capture(): void {
         this.img.remove();
         gamePosition[this.row][this.col] = null;
         pieceMap.delete(this.img.id);
 
-
-        // if (this.color === "w") {
-        //     console.log("Schwarzer Score1:", Piece.blackScore);
-        //     console.log("Schwarzer points1:", this.points);
-        //     Piece.blackScore += this.points;
-        //     console.log("Schwarzer Score2:", Piece.blackScore);
-        //     console.log("Schwarzer points2:", this.points);
-
-        // } else if (this.color === "b") {
-        //     console.log("Weisser Score1:", Piece.whiteScore);
-        //     console.log("Weisser points1:", this.points);
-        //     Piece.whiteScore += this.points;
-        //     console.log("Weisser Score2:", Piece.whiteScore);
-        //     console.log("Weisser points1:", this.points);
-        // }
-
         const capturedContainer =
             this.color === "w" ? document.getElementById("captured-white") : document.getElementById("captured-black");
-
-        // const scoreCounter =
-        //     this.color === "w" ? document.getElementById("captured-white-score") : document.getElementById("captured-black-score");
-
-        // if (scoreCounter) {
-        //     console.log('jbhg')
-        //     scoreCounter.textContent = `Score: ${this.color === "w" ? Piece.whiteScore : Piece.blackScore}`;
-        // }
 
         if (capturedContainer) {
 
@@ -212,7 +204,6 @@ class Piece {
     }
 
     static isCheckmate(color: string): boolean {
-
         //Iterating through each piece
         for (let pieceRow = 0; pieceRow < gamePosition.length; pieceRow++)
         {
@@ -237,6 +228,35 @@ class Piece {
             }
         }
         return true;
+    }
+
+    static isPositionDraw(): boolean {
+        //Counting the pieces on the board
+        let piecesCount = 0;
+        for (let row of gamePosition)
+        {
+            for (let piece of row)
+            {
+                if (piece)
+                {
+                    //If there is a queen, rook or pawn, it's not a draw
+                    if (piece instanceof Queen || piece instanceof Rook || piece instanceof Pawn)
+                    {
+                        return false;
+                    }
+
+                    piecesCount + 1;
+                }
+            }
+        }
+
+        //If the pieces are equal or less than 3, with no queens, rooks and pawns, it's a draw
+        if (piecesCount <= 3)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
 

@@ -178,7 +178,7 @@ class King extends Piece {
             (newCol === this.col && Math.abs(newRow - this.row) === 1) ||
             (Math.abs(this.row - newRow) === 1 && Math.abs(this.col - newCol) === 1) ||
             //Checking if the king can castle
-            (this.canCastle(newRow, newCol) && !this.isCheck(this.row, this.col))
+            (this.canCastle(newRow, newCol) && !this.isCheck(this.row, this.col, this.color))
            ) 
         {
             return true;
@@ -287,4 +287,4 @@ const createPiece = (piece: string, color: string, row: number, col: number, id:
     }
 }
 
-export { createPiece, King, Pawn };
+export { createPiece, King, Pawn, Queen, Rook };
