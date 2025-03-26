@@ -1,4 +1,4 @@
-import { Piece } from "./Piece.js";
+import { Piece } from './Piece.js';
 
 class Move {
     piece: Piece;

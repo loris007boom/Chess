@@ -2,7 +2,8 @@
   "compilerOptions": {
       "module": "ESNext",
       "target": "ES6",
-      "strict": true
+      "strict": true,
+      "outDir": "./javascript"
   },
   "include": ["**/*.ts"]
 }

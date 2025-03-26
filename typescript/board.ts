@@ -1,7 +1,7 @@
-import { createPiece } from "./pieces.js";
-import { Piece } from "./Piece.js";
-import { addDropEvents } from "./drag-drop.js";
-import { Move } from "./Move.js";
+import { createPiece } from './pieces.js';
+import { Piece } from './Piece.js';
+import { addDropEvents } from './drag-drop.js';
+import { Move } from './Move.js';
 
 // Map Object to store a connection between the images and their objects
 const pieceMap = new Map<string, Piece>();

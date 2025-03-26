@@ -1,4 +1,4 @@
-import { King } from "./pieces.js";
+import { King } from './pieces.js';
 
 let vCheck_On = (king: King) => {
     const image = king.img;

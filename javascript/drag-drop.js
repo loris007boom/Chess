@@ -1,6 +1,6 @@
-import { gamePosition, pieceMap, moves } from "./board.js";
-import { King, Pawn } from "./pieces.js";
-import { Move } from "./Move.js";
+import { gamePosition, pieceMap, moves } from './board.js';
+import { King, Pawn } from './pieces.js';
+import { Move } from './Move.js';
 let currentTurn = "w"; // Weiß beginnt
 // Drag & Drop Events
 const addDragEvents = (img) => {

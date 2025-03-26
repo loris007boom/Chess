@@ -1,7 +1,6 @@
 import { getCurrentTurn } from './drag-drop.js';
 import { showWinnerPopup } from './winningScreen.js';
 import { createBoard } from './board.js';
-import {Piece}  from './Piece.js'
 
 let intervalID: number;
 
