@@ -245,18 +245,13 @@ class Piece {
                         return false;
                     }
 
-                    piecesCount + 1;
+                    piecesCount++;
                 }
             }
         }
 
         //If the pieces are equal or less than 3, with no queens, rooks and pawns, it's a draw
-        if (piecesCount <= 3)
-        {
-            return true;
-        }
-
-        return false;
+        return piecesCount <= 3;
     }
 }
 
